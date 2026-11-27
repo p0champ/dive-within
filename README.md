@@ -18,6 +18,7 @@ Not affiliated with David Lynch, the David Lynch Foundation, or the TM organisat
 
 ## Credits
 
-Music: "Peaceful Desolation" by Kevin MacLeod (incompetech.com), licensed under Creative Commons Attribution (CC BY), via Wikimedia Commons. Re-encoded to MP3.
+Music: real recordings from Freesound, released into the public domain (CC0), trimmed into seamless loops:
+"Tambura Eb" by Kaczinski, "Tanpura 10" by sankalp, "Tibetan Singing Bowls Improv" by RutgerMuller.
 
 When releasing changes, bump `VERSION` in `sw.js` so phones pick up the new version.
