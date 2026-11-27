@@ -1,6 +1,6 @@
 // Dive Within: works offline once opened. Bump VERSION on every release.
-const VERSION = "dive-v2";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./music/peaceful-desolation.mp3"];
+const VERSION = "dive-v3";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./music/loop-tanpura-eb.mp3", "./music/loop-tanpura-10.mp3", "./music/loop-bowls.mp3"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)));
