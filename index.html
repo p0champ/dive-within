@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#151b29">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Dive Within">
 <meta name="description" content="Twice a day, twenty minutes. A meditation timer and practice log in the spirit of Maharishi Mahesh Yogi and David Lynch.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -15,250 +15,247 @@
 <title>Dive Within</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,200..800;1,62..125,200..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: a 1970s instruction card. A strict column, flat colour, one diagram of the mind as an ocean (surface to source), one marigold point that sinks and rises. Day palette before 3 pm, ink palette after. */
+/* Layout: a painted sea at the top (Maharishi's ocean of the mind), a warm column of words beneath it, a mala to count the days. Palette follows the hour: dawn, dusk, night. */
 :root {
-  --paper: #e4e6e1;
-  --ink: #1a2132;
-  --muted: #646b7a;
-  --line: rgba(26, 33, 50, 0.16);
-  --sun: #dd9227;
-  --panel: rgba(26, 33, 50, 0.05);
-  --font: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --page: #f7ede4;
+  --card: #fcf6f0;
+  --ink: #2a2233;
+  --soft: #7a6d77;
+  --line: rgba(42, 34, 51, 0.13);
+  --sun: #dd8a1c;
+  --rose: #c4646b;
+  --wood-a: #d9a066;
+  --wood-b: #8b5127;
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Instrument Sans", "Helvetica Neue", system-ui, sans-serif;
   color-scheme: light;
 }
-:root[data-sky="night"] {
-  --paper: #151b29;
-  --ink: #e2e3dd;
-  --muted: #8b91a0;
-  --line: rgba(226, 227, 221, 0.14);
-  --sun: #e8a23a;
-  --panel: rgba(226, 227, 221, 0.05);
-  color-scheme: dark;
-}
+:root[data-sky="dusk"] { --page: #f4e2d2; --card: #faefe5; --ink: #2c2230; --soft: #7c6a6b; --line: rgba(44, 34, 48, 0.13); --sun: #d6761f; --rose: #bd5a60; }
+:root[data-sky="night"] { --page: #15172a; --card: #1e2137; --ink: #efe5d8; --soft: #a09aac; --line: rgba(239, 229, 216, 0.13); --sun: #efa546; --rose: #e08c8f; --wood-a: #c98d55; --wood-b: #7a4520; color-scheme: dark; }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; }
 html, body { height: 100%; }
-body { background: var(--paper); color: var(--ink); font-family: var(--font); font-stretch: 100%; font-weight: 400; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; transition: background-color 1.5s, color 1.5s; overflow-x: hidden; }
+body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; transition: background-color 2s, color 2s; overflow-x: hidden; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; }
-a { color: inherit; text-decoration-color: var(--sun); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, label:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; border-radius: 6px; }
+a { color: inherit; text-decoration-color: var(--sun); text-underline-offset: 3px; }
 p { margin: 0; }
-.small { font-size: 0.78rem; font-stretch: 85%; letter-spacing: 0.02em; color: var(--muted); }
-.caps { font-size: 0.72rem; font-stretch: 110%; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.serif { font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 0; }
+.small { font-size: 0.8rem; color: var(--soft); }
+.eyebrow { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); }
 
-.app {
-  min-height: 100%; max-width: 460px; margin: 0 auto; box-sizing: border-box;
-  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
-  padding-block: calc(env(safe-area-inset-top, 0px) + 18px) calc(env(safe-area-inset-bottom, 0px) + 84px);
-  display: flex; flex-direction: column; gap: 0;
-}
-.mast { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
-.mast .name { font-weight: 800; font-stretch: 125%; font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; }
-.mast .date { font-size: 0.78rem; font-stretch: 85%; color: var(--muted); text-align: right; }
-.subrow { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0 0; }
-
-.view { animation: in 0.7s ease both; }
+.app { min-height: 100%; box-sizing: border-box; padding-block: calc(env(safe-area-inset-top, 0px) + 18px) calc(env(safe-area-inset-bottom, 0px) + 84px); }
+.col { max-width: 460px; margin: 0 auto; box-sizing: border-box; padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); }
+.view { animation: in 0.9s ease both; }
 @keyframes in { from { opacity: 0; } to { opacity: 1; } }
 
+/* the sea */
+.scene { position: relative; margin-top: -18px; height: 44vh; min-height: 250px; max-height: 420px; }
+.scene canvas { display: block; width: 100%; height: 100%; }
+.scene .top { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; gap: 10px; padding: 16px max(22px, env(safe-area-inset-right, 0px)) 0 max(22px, env(safe-area-inset-left, 0px)); font-size: 0.78rem; color: rgba(42, 34, 51, 0.7); }
+:root[data-sky="night"] .scene .top { color: rgba(239, 229, 216, 0.75); }
+
 /* home */
-.home { display: flex; flex-direction: column; gap: 20px; padding-top: 22px; }
-.title-row { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
-.title { margin: 0; font-weight: 300; font-stretch: 112%; font-size: 3rem; line-height: 0.95; letter-spacing: -0.02em; }
-.mins { text-align: right; }
-.mins b { display: block; font-weight: 200; font-stretch: 62%; font-size: 4.2rem; line-height: 0.82; font-variant-numeric: tabular-nums; }
-.when { font-size: 0.95rem; color: var(--muted); }
+.home-body { display: flex; flex-direction: column; gap: 22px; padding-top: 26px; }
+.greet { margin: 0; font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 400; font-size: 2.7rem; line-height: 1.02; letter-spacing: -0.015em; text-wrap: balance; }
+.when { color: var(--soft); font-size: 1rem; margin-top: 8px; }
+.begin { width: 100%; padding: 18px 22px; border-radius: 999px; background: var(--ink); color: var(--page); font-family: var(--serif); font-variation-settings: "SOFT" 100; font-size: 1.2rem; font-weight: 400; font-style: italic; display: flex; justify-content: center; gap: 10px; align-items: baseline; transition: transform 0.2s; }
+.begin:active { transform: scale(0.985); }
+.begin small { font-family: var(--sans); font-style: normal; font-size: 0.8rem; opacity: 0.7; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; font-size: 0.88rem; color: var(--soft); display: inline-flex; gap: 7px; align-items: center; }
+.chip[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); }
+.chip .pip { width: 7px; height: 7px; border-radius: 50%; border: 1px solid currentColor; }
+.chip .pip.on { background: var(--sun); border-color: var(--sun); }
+.chip.music[aria-pressed="false"] { text-decoration: line-through; text-decoration-color: var(--soft); }
 
-.diagram { position: relative; }
-.diagram svg { display: block; width: 100%; height: auto; overflow: visible; }
-.lvl-label { font-family: var(--font); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--muted); paint-order: stroke; stroke: var(--paper); stroke-width: 5px; }
-.lvl-line { stroke: var(--ink); stroke-opacity: 0.22; stroke-width: 0.6; }
-.lvl-line.edge { stroke-opacity: 1; stroke-width: 1.2; }
-.dot { fill: var(--sun); }
-
-.begin { display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; background: var(--ink); color: var(--paper); padding: 18px 20px; font-weight: 600; font-stretch: 115%; font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.begin .arrow { font-weight: 300; font-size: 1.3rem; line-height: 1; }
-.begin:active { opacity: 0.85; }
-
-.controls { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
-.ctl { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; }
-.ctl + .ctl { border-left: 1px solid var(--line); padding-left: 14px; }
-.seg { display: flex; gap: 2px; flex-wrap: wrap; }
-.seg button { font-size: 0.88rem; padding: 4px 8px 4px 0; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
-.seg button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
-.sq { width: 9px; height: 9px; border: 1.2px solid currentColor; box-sizing: border-box; display: inline-block; }
-.sq.on { background: var(--sun); border-color: var(--sun); }
-
-.teaching { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-.teaching .text { font-size: 1.15rem; font-weight: 300; font-stretch: 100%; line-height: 1.4; text-wrap: pretty; }
-.teaching .who { font-size: 0.8rem; color: var(--muted); }
-.teaching .sealed { font-size: 0.95rem; color: var(--muted); }
-.teaching .title-s { font-weight: 500; font-stretch: 105%; font-size: 1.15rem; }
-.teaching .sealed a { color: var(--ink); }
-button.bead { padding: 0; cursor: pointer; }
-.bead.sel { outline: 2px solid var(--sun); outline-offset: 2px; }
-.lesson { display: flex; flex-direction: column; gap: 8px; padding: 16px; background: var(--panel); border-left: 3px solid var(--sun); }
-.lesson h4 { margin: 0; font-weight: 500; font-stretch: 105%; font-size: 1.35rem; line-height: 1.2; text-wrap: balance; }
-.lesson .text { font-size: 1.05rem; font-weight: 300; line-height: 1.5; }
-.lesson-nav { display: flex; justify-content: space-between; padding-top: 6px; }
-.lesson-nav button { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 0; }
-.lesson-nav button:disabled { opacity: 0.25; cursor: default; }
-.after .gift .g-ch, .after .gift .g-t, .after .gift .g-s { display: block; }
-.after .gift .g-ch { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8b91a0; margin-bottom: 6px; }
-.after .gift .g-t { font-weight: 500; font-size: 1.3rem; color: #e2e3dd; margin-bottom: 4px; }
-.after .gift .g-s { font-size: 0.8rem; color: #8b91a0; margin-top: 8px; }
+/* book page */
+.page-card { background: var(--card); border-radius: 18px; padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 0 var(--line); }
+.page-card .t { margin: 0; font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-style: italic; font-weight: 400; font-size: 1.6rem; line-height: 1.15; text-wrap: balance; }
+.page-card .b { font-family: var(--serif); font-variation-settings: "SOFT" 50; font-size: 1.1rem; line-height: 1.55; font-weight: 350; text-wrap: pretty; }
+.page-card .s { font-size: 0.8rem; color: var(--soft); }
+.page-card .s::before { content: "\2014\00a0"; }
+.page-card .more { font-size: 0.88rem; color: var(--soft); border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; }
+.page-card .more a { color: var(--ink); }
 
 /* nav */
-.nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--paper); border-top: 2px solid var(--ink);
-  padding: 0 max(20px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(20px, env(safe-area-inset-left, 0px)); transition: background-color 1.5s; }
+.nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--page); border-top: 1px solid var(--line); transition: background-color 2s;
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); }
 .nav-in { max-width: 460px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
-.nav a { text-decoration: none; text-align: center; padding: 14px 0 16px; font-size: 0.74rem; font-stretch: 100%; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border-top: 4px solid transparent; margin-top: -2px; }
-.nav a[aria-current="page"] { color: var(--ink); border-top-color: var(--sun); }
+.nav a { text-decoration: none; text-align: center; padding: 15px 0 17px; font-size: 0.86rem; color: var(--soft); position: relative; }
+.nav a[aria-current="page"] { color: var(--ink); }
+.nav a[aria-current="page"]::before { content: ""; position: absolute; top: 7px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--sun); }
 
 /* pages */
-.page { display: flex; flex-direction: column; gap: 22px; padding-top: 22px; }
-.page h2 { margin: 0; font-weight: 300; font-stretch: 112%; font-size: 2.4rem; line-height: 1; letter-spacing: -0.02em; }
-.page h3 { margin: 0; font-weight: 600; font-stretch: 110%; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; padding-top: 14px; border-top: 2px solid var(--ink); }
+.page { display: flex; flex-direction: column; gap: 22px; padding-top: 16px; }
+.page h2 { margin: 0; font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 400; font-size: 2.5rem; line-height: 1; letter-spacing: -0.015em; }
+.page h3 { margin: 0; font-family: var(--serif); font-variation-settings: "SOFT" 100; font-weight: 400; font-style: italic; font-size: 1.35rem; }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
 
 /* guide */
-.card { display: flex; flex-direction: column; gap: 16px; min-height: 50vh; }
-.card .num { font-weight: 200; font-stretch: 62%; font-size: 5rem; line-height: 0.8; color: var(--sun); font-variant-numeric: tabular-nums; }
-.card h4 { margin: 0; font-weight: 400; font-stretch: 112%; font-size: 1.9rem; line-height: 1.05; letter-spacing: -0.01em; text-wrap: balance; }
-.card p { font-size: 1.02rem; max-width: 38ch; }
-.card .note { color: var(--muted); padding-left: 12px; border-left: 2px solid var(--sun); }
-.guide-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-top: 1px solid var(--line); padding-top: 10px; }
-.guide-nav button { padding: 10px 0; font-weight: 600; font-stretch: 110%; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
-.guide-nav #gNext { justify-self: end; }
-.guide-nav button:disabled { opacity: 0.25; cursor: default; }
-.ticks { display: flex; gap: 4px; }
-.ticks span { width: 14px; height: 3px; background: var(--line); }
-.ticks span.on { background: var(--ink); }
-.solid { background: var(--ink); color: var(--paper); padding: 14px 18px; font-weight: 600; font-stretch: 115%; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; align-self: flex-start; }
+.gcard { min-height: 52vh; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+.gcard .num { font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--sun); }
+.gcard h4 { margin: 0; font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 400; font-size: 2.2rem; line-height: 1.08; text-wrap: balance; }
+.gcard p { font-size: 1.05rem; max-width: 38ch; }
+.gcard .note { font-family: var(--serif); font-style: italic; font-size: 1.08rem; color: var(--soft); }
+.gnav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.gnav button { padding: 10px 0; font-size: 0.95rem; }
+.gnav #gNext { justify-self: end; }
+.gnav button:disabled { opacity: 0.25; cursor: default; }
+.dots { display: flex; gap: 6px; }
+.dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+.dots span.on { background: var(--sun); }
+.pill { align-self: flex-start; padding: 13px 22px; border-radius: 999px; background: var(--ink); color: var(--page); font-family: var(--serif); font-style: italic; font-size: 1.05rem; }
 
-/* practice */
-.mala-head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: end; }
-.mala-head b { font-weight: 200; font-stretch: 62%; font-size: 5.6rem; line-height: 0.78; font-variant-numeric: tabular-nums; }
-.beads { display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; }
-.bead { aspect-ratio: 1; max-width: 100%; border-radius: 50%; border: 1.2px solid var(--line); box-sizing: border-box; }
-.bead.on { background: var(--ink); border-color: var(--ink); }
-.bead.last { background: var(--sun); border-color: var(--sun); }
-.figs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
-.figs div { padding: 12px 0; display: flex; flex-direction: column; gap: 2px; }
-.figs div + div { border-left: 1px solid var(--line); padding-left: 12px; }
-.figs b { font-weight: 300; font-stretch: 75%; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
-.grid-wrap { overflow-x: auto; }
-.days { display: grid; grid-template-columns: repeat(21, 1fr); gap: 3px; min-width: 290px; }
-.day { display: flex; flex-direction: column; gap: 3px; }
-.cell { aspect-ratio: 1; background: var(--panel); border: 1px solid var(--line); box-sizing: border-box; }
-.cell.on { background: var(--ink); border-color: var(--ink); }
+/* practice: the mala */
+.mala { position: relative; width: min(300px, 100%); margin: 0 auto; }
+.mala svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mala .count { position: absolute; left: 0; right: 0; top: 41%; transform: translateY(-50%); text-align: center; }
+.mala .count b { display: block; font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 300; font-size: 3.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.bd { stroke: none; }
+.bd.off { fill: none; stroke: var(--line); stroke-width: 1; }
+.bd.on { fill: url(#wood); }
+.bd.now { fill: var(--sun); }
+.thread { fill: none; stroke: var(--line); stroke-width: 1; }
+.guru { fill: url(#wood); }
+.tassel { stroke: var(--rose); stroke-width: 1.2; stroke-linecap: round; }
+.figs { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+.figs b { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.9rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.days { display: grid; grid-template-columns: repeat(21, 1fr); gap: 3px; }
+.day { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+.cell { width: 100%; aspect-ratio: 1; max-width: 13px; border-radius: 50%; border: 1px solid var(--line); box-sizing: border-box; }
+.cell.on { background: var(--wood-a); border-color: var(--wood-a); }
 .day.today .cell { border-color: var(--sun); }
-.day-label { font-size: 0.6rem; color: var(--muted); min-height: 1em; font-variant-numeric: tabular-nums; }
-.today-row { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 0.85rem; color: var(--muted); }
-.today-row button { text-decoration: underline; text-underline-offset: 3px; color: var(--muted); }
+.day-label { font-size: 0.6rem; color: var(--soft); min-height: 1em; font-variant-numeric: tabular-nums; }
+.today-row { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 0.86rem; color: var(--soft); }
+.today-row button { text-decoration: underline; text-underline-offset: 3px; color: var(--soft); }
+.toc { display: flex; flex-direction: column; gap: 14px; }
+.toc .ch { display: flex; flex-direction: column; gap: 2px; }
+.toc .ch-name { font-family: var(--serif); font-style: italic; font-size: 1.15rem; }
+.toc .ch-name small { font-family: var(--sans); font-style: normal; font-size: 0.75rem; color: var(--soft); margin-left: 6px; }
+.toc ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 16px; }
+.toc li { break-inside: avoid; }
+.toc li button { text-align: left; font-size: 0.9rem; padding: 3px 0; color: var(--ink); }
+.toc li button[aria-current="true"] { color: var(--sun); }
+.toc li span { font-size: 0.9rem; color: var(--soft); opacity: 0.6; }
+.lnav { display: flex; justify-content: space-between; }
+.lnav button { font-size: 0.9rem; padding: 4px 0; }
+.lnav button:disabled { opacity: 0.25; cursor: default; }
 .times { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.times label { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--muted); }
-.times input { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 0; padding: 10px; font: inherit; font-size: 16px; min-width: 0; }
-.catch { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-.catch li { display: grid; grid-template-columns: 4.6rem 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-.catch .what { font-weight: 300; font-size: 1.05rem; line-height: 1.4; overflow-wrap: anywhere; min-width: 0; }
+.times label { display: flex; flex-direction: column; gap: 4px; font-size: 0.84rem; color: var(--soft); }
+.times input { background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 10px; font: inherit; font-size: 16px; min-width: 0; }
+.catch { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.catch li { display: flex; flex-direction: column; gap: 2px; }
+.catch .what { font-family: var(--serif); font-style: italic; font-size: 1.15rem; line-height: 1.4; overflow-wrap: anywhere; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.outline { border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; font-size: 0.9rem; }
 
 /* music */
-.tracks { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-.track { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--line); text-align: left; width: 100%; }
-.track .t-name { font-size: 1.15rem; font-weight: 400; font-stretch: 105%; }
-.track .t-meta { font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.track[aria-pressed="true"] .t-name { font-weight: 600; }
-.row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-.row input[type=range] { flex: 1; min-width: 140px; accent-color: var(--sun); }
-.outline { border: 1.5px solid var(--ink); padding: 10px 16px; font-weight: 600; font-stretch: 110%; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.choice { display: grid; grid-template-columns: auto 1fr; gap: 10px; text-align: left; padding: 10px 0; }
-.choice .sq { margin-top: 5px; }
-.choice small { display: block; color: var(--muted); font-size: 0.85rem; }
-.credits { font-size: 0.78rem; color: var(--muted); }
+.switch { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; background: var(--card); border-radius: 16px; width: 100%; box-sizing: border-box; text-align: left; }
+.switch .knob { width: 46px; height: 28px; border-radius: 999px; background: var(--line); position: relative; flex: none; transition: background-color 0.3s; }
+.switch .knob::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--page); box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform 0.3s; }
+.switch[aria-checked="true"] .knob { background: var(--sun); }
+.switch[aria-checked="true"] .knob::after { transform: translateX(18px); }
+.tracks { display: flex; flex-direction: column; }
+.tracks.off { opacity: 0.4; }
+.track { display: grid; grid-template-columns: auto 1fr; gap: 0 12px; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line); text-align: left; width: 100%; }
+.track .dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--soft); align-self: center; }
+.track[aria-pressed="true"] .dot { background: var(--sun); border-color: var(--sun); }
+.track .t-name { font-family: var(--serif); font-size: 1.25rem; }
+.track .t-meta { grid-column: 2; font-size: 0.8rem; color: var(--soft); }
+.vol { display: flex; gap: 12px; align-items: center; }
+.vol input { flex: 1; accent-color: var(--sun); }
+.choice { display: grid; grid-template-columns: auto 1fr; gap: 10px; text-align: left; padding: 8px 0; }
+.choice .dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--soft); margin-top: 6px; }
+.choice[aria-pressed="true"] .dot { background: var(--sun); border-color: var(--sun); }
+.choice small { display: block; color: var(--soft); font-size: 0.85rem; }
+.credits { font-size: 0.8rem; color: var(--soft); }
 
-/* session — always the ink palette */
-.session { position: fixed; inset: 0; z-index: 30; background: #10141f; color: #e2e3dd;
-  display: grid; grid-template-rows: auto 1fr auto; gap: 18px;
-  padding: calc(env(safe-area-inset-top, 0px) + 20px) max(22px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 22px) max(22px, env(safe-area-inset-left, 0px)); }
-.session .inner { width: 100%; max-width: 420px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; min-height: 0; }
-.session .head { display: flex; justify-content: space-between; gap: 10px; font-size: 0.75rem; font-stretch: 110%; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8b91a0; border-bottom: 1px solid rgba(226,227,221,0.25); padding-bottom: 10px; transition: opacity 3s; }
-.session .diagram { flex: 1; display: flex; align-items: center; min-height: 0; }
-.session .diagram svg { max-height: 52vh; }
-.session .lvl-line { stroke: #e2e3dd; }
-.session .lvl-label { fill: #6f7585; stroke: #10141f; }
-.session .words { font-size: 1.25rem; font-weight: 300; line-height: 1.35; text-wrap: balance; transition: opacity 3s; min-height: 3.4em; }
-.session.dim .words, .session.dim .head { opacity: 0.12; }
-.s-actions { display: flex; justify-content: space-between; gap: 12px; font-size: 0.78rem; font-stretch: 110%; letter-spacing: 0.1em; text-transform: uppercase; color: #8b91a0; }
-.s-actions button { color: #8b91a0; padding: 8px 0; }
-.after { display: flex; flex-direction: column; gap: 14px; }
-.after .bead-line { display: flex; align-items: baseline; gap: 10px; }
-.after .bead-line b { font-weight: 200; font-stretch: 62%; font-size: 4.2rem; line-height: 0.8; color: #e8a23a; }
-.after .gift { font-size: 1.15rem; font-weight: 300; line-height: 1.4; padding-left: 12px; border-left: 2px solid #e8a23a; }
-.after label { font-size: 0.85rem; color: #8b91a0; }
-.after textarea { width: 100%; box-sizing: border-box; min-height: 80px; resize: vertical; background: rgba(226,227,221,0.06); color: #e2e3dd; border: 1px solid rgba(226,227,221,0.2); padding: 12px; font: inherit; font-size: 16px; }
-.after .solid { background: #e2e3dd; color: #10141f; align-self: stretch; text-align: center; }
+/* sitting */
+.session { position: fixed; inset: 0; z-index: 30; background: #0a1a2b; color: #f6efe6; }
+.session canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.s-ui { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 22px) max(22px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 22px) max(22px, env(safe-area-inset-left, 0px)); text-shadow: 0 1px 3px rgba(0, 10, 30, 0.55), 0 2px 18px rgba(0, 10, 30, 0.6); }
+.s-phase { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; transition: opacity 3s; }
+.s-words { font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-style: italic; font-weight: 300; font-size: 1.7rem; line-height: 1.3; max-width: 22ch; text-wrap: balance; transition: opacity 3s; }
+.s-clock { font-size: 0.9rem; opacity: 0.8; min-height: 1.4em; font-variant-numeric: tabular-nums; margin-top: 12px; }
+.session.dim .s-words, .session.dim .s-phase, .session.dim .s-clock { opacity: 0.12; }
+.session.dim .s-actions { opacity: 0.35; }
+.s-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; transition: opacity 3s; }
+.s-actions button { font-size: 0.85rem; padding: 9px 15px; border-radius: 999px; background: rgba(246, 239, 230, 0.1); border: 1px solid rgba(246, 239, 230, 0.22); color: #f6efe6; text-shadow: none; }
+.after { position: absolute; left: 0; right: 0; bottom: 0; max-height: 88%; overflow-y: auto; background: var(--page); color: var(--ink); border-radius: 26px 26px 0 0; text-shadow: none; text-align: left;
+  padding: 24px max(22px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 22px) max(22px, env(safe-area-inset-left, 0px)); animation: rise 1.4s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes rise { from { transform: translateY(100%); } to { transform: none; } }
+.after-in { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.after .welcome { margin: 0; font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 400; font-size: 2.1rem; line-height: 1.05; }
+.after .bead-line { font-size: 0.9rem; color: var(--soft); }
+.after .bead-line b { color: var(--sun); font-weight: 600; }
+.after label { font-size: 0.9rem; color: var(--soft); }
+.after textarea { width: 100%; box-sizing: border-box; min-height: 80px; resize: vertical; background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 14px; padding: 12px; font-family: var(--serif); font-style: italic; font-size: 17px; }
+.after .begin { margin-top: 4px; }
 
-@media (prefers-reduced-motion: reduce) { .view { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .view, .after { animation: none; } }
 </style>
 </head>
 <body>
 
 <main class="app">
-  <header>
-    <div class="mast"><span class="name">Dive Within</span><span class="date" id="dateLine"></span></div>
-    <div class="subrow small"><span id="beadMini"></span><span id="numberLine"></span></div>
-  </header>
-
-  <section class="home view" id="view-home">
-    <div class="title-row">
-      <h1 class="title" id="title">Morning</h1>
-      <div class="mins"><b id="minsBig">20</b><span class="small">minutes</span></div>
+  <section class="view" id="view-home">
+    <div class="scene">
+      <canvas id="homeScene" aria-hidden="true"></canvas>
+      <div class="top"><span id="dateLine"></span><span id="numberLine"></span></div>
     </div>
-    <p class="when" id="whenLine"></p>
-    <div class="diagram" aria-hidden="true"><svg id="homeDiagram" viewBox="0 0 320 220"></svg></div>
-    <button class="begin" type="button" id="beginBtn"><span id="beginText">Begin</span><span class="arrow">&#8595;</span></button>
-    <div class="controls">
-      <div class="ctl"><span class="caps small">Sit</span><div class="seg" id="slotSeg">
-        <button type="button" id="slot-morning"><span class="sq"></span>Morning</button>
-        <button type="button" id="slot-afternoon"><span class="sq"></span>Afternoon</button>
-      </div></div>
-      <div class="ctl"><span class="caps small">Length</span><div class="seg">
-        <button type="button" id="len-10">10</button><button type="button" id="len-15">15</button><button type="button" id="len-20">20</button>
-      </div></div>
+    <div class="col home-body">
+      <div>
+        <h1 class="greet" id="greet">Good morning.</h1>
+        <p class="when" id="whenLine"></p>
+      </div>
+      <button class="begin" type="button" id="beginBtn"><span id="beginText">Begin the morning sit</span><small id="beginMins">20 min</small></button>
+      <div class="chips">
+        <button class="chip" type="button" id="slot-morning"><span class="pip"></span>Morning</button>
+        <button class="chip" type="button" id="slot-afternoon"><span class="pip"></span>Afternoon</button>
+        <button class="chip" type="button" id="lenChip">20 min</button>
+        <button class="chip music" type="button" id="musicChip" aria-pressed="true">Tanpura</button>
+      </div>
+      <article class="page-card" id="lessonCard" aria-live="polite"></article>
     </div>
-    <div class="teaching" id="teachBox"></div>
   </section>
 
-  <section class="page view" id="view-guide" hidden aria-label="Guide">
-    <div class="card" id="card" aria-live="polite"></div>
-    <div class="guide-nav">
+  <section class="view col page" id="view-guide" hidden aria-label="Guide">
+    <div class="gcard" id="card" aria-live="polite"></div>
+    <div class="gnav">
       <button type="button" id="gPrev">Back</button>
-      <div class="ticks" id="gTicks"></div>
+      <div class="dots" id="gDots"></div>
       <button type="button" id="gNext">Next</button>
     </div>
   </section>
 
-  <section class="page view" id="view-practice" hidden>
-    <h2>Practice</h2>
-    <div class="mala-head"><b id="beadCount">0</b><p class="small" id="malaNote">of 108 beads. Each sit is one.</p></div>
-    <div class="beads" id="beads" aria-label="Mala of 108 beads. Tap an open bead to read its lesson."></div>
-    <div class="lesson" id="lessonBox" aria-live="polite"></div>
+  <section class="view col page" id="view-practice" hidden>
+    <h2>Your mala</h2>
+    <div class="mala">
+      <svg id="malaSvg" viewBox="-150 -150 300 340" aria-hidden="true"></svg>
+      <div class="count"><b id="beadCount">0</b><span class="small" id="beadOf">of 108</span></div>
+    </div>
+    <p class="small" style="text-align:center" id="malaNote">Each sit is a bead. Each bead opens a lesson.</p>
+    <article class="page-card" id="readerCard" aria-live="polite"></article>
+    <h3>The path</h3>
+    <div class="toc" id="toc"></div>
+    <hr class="rule">
     <div class="figs">
-      <div><b id="figThread">0</b><span class="small">day thread</span></div>
+      <div><b id="figThread">0</b><span class="small">days in a row</span></div>
       <div><b id="figSits">0</b><span class="small">sits</span></div>
       <div><b id="figHours">0</b><span class="small">hours within</span></div>
     </div>
-    <h3>Last three weeks</h3>
-    <div class="grid-wrap"><div class="days" id="daysGrid" aria-label="Last three weeks. Top row morning, bottom row afternoon."></div></div>
+    <div class="days" id="daysGrid" aria-label="Last three weeks. Top morning, bottom afternoon."></div>
     <div class="today-row" id="todayRow"></div>
     <h3>Your two times</h3>
     <div class="times">
       <label for="t-morning">Morning<input type="time" id="t-morning"></label>
       <label for="t-afternoon">Afternoon<input type="time" id="t-afternoon"></label>
     </div>
-    <p class="small">Same chair, same hour, every day.</p>
     <h3>The catch</h3>
     <ul class="catch" id="catchList"></ul>
     <p class="small" id="syncLine">Opening…</p>
@@ -266,14 +263,17 @@ button.bead { padding: 0; cursor: pointer; }
     <p class="small" id="backupMsg"></p>
   </section>
 
-  <section class="page view" id="view-music" hidden>
+  <section class="view col page" id="view-music" hidden>
     <h2>Music</h2>
+    <button class="switch" type="button" role="switch" id="musicSwitch" aria-checked="true"><span><span class="serif" style="font-size:1.2rem">Music</span><br><span class="small" id="musicSwitchNote">Plays while you settle and come up</span></span><span class="knob"></span></button>
     <div class="tracks" id="tracks"></div>
-    <div class="row"><button class="outline" type="button" id="previewBtn">Listen</button><input type="range" id="vol" min="0" max="1" step="0.05" aria-label="Music volume"></div>
-    <h3>During the sit</h3>
-    <div role="group" aria-label="During the sit">
-      <button class="choice" type="button" id="mode-fade"><span class="sq"></span><span>Fade to silence<small>Music while you settle and while you come out. TM itself is practised in silence.</small></span></button>
-      <button class="choice" type="button" id="mode-through"><span class="sq"></span><span>Play all the way through<small>Softly, under the whole sit.</small></span></button>
+    <div class="row"><button class="outline" type="button" id="previewBtn">Listen</button></div>
+    <div class="vol"><span class="small">Volume</span><input type="range" id="vol" min="0" max="1" step="0.05" aria-label="Music volume"></div>
+    <hr class="rule">
+    <div role="group" aria-label="During the twenty minutes">
+      <span class="eyebrow">During the twenty minutes</span>
+      <button class="choice" type="button" id="mode-fade"><span class="dot"></span><span>Fade to silence<small>TM itself is practised in silence. The music carries you in and brings you back.</small></span></button>
+      <button class="choice" type="button" id="mode-through"><span class="dot"></span><span>Play softly all the way through</span></button>
     </div>
     <p class="credits" id="credits"></p>
   </section>
@@ -282,27 +282,30 @@ button.bead { padding: 0; cursor: pointer; }
 <nav class="nav" aria-label="Sections"><div class="nav-in">
   <a href="#" id="nav-home">Sit</a>
   <a href="#guide" id="nav-guide">Guide</a>
-  <a href="#practice" id="nav-practice">Practice</a>
+  <a href="#practice" id="nav-practice">Mala</a>
   <a href="#music" id="nav-music">Music</a>
 </div></nav>
 
 <div class="session" id="session" hidden role="dialog" aria-modal="true" aria-label="Sitting">
-  <div class="inner">
-    <div class="head"><span id="sPhase"></span><span id="sClock"></span></div>
-  </div>
-  <div class="inner">
-    <div class="diagram" id="sDiagramWrap" aria-hidden="true"><svg id="sDiagram" viewBox="0 0 320 220"></svg></div>
-    <p class="words" id="sWords"></p>
-    <div class="after" id="sAfter" hidden>
-      <div class="bead-line"><b id="beadBig"></b><span class="small" id="beadOf"></span></div>
-      <p class="gift" id="giftLine"></p>
-      <label for="fishNote" id="fishLabel">Did anything surface? An idea, an image. Optional.</label>
-      <textarea id="fishNote" maxlength="600"></textarea>
-      <button class="solid" type="button" id="saveBtn">Keep it</button>
+  <canvas id="sScene" aria-hidden="true"></canvas>
+  <div class="s-ui" id="sUi">
+    <span class="s-phase" id="sPhase"></span>
+    <div><p class="s-words" id="sWords"></p><p class="s-clock" id="sClock"></p></div>
+    <div class="s-actions" id="sActions">
+      <button type="button" id="peekBtn">Time</button>
+      <button type="button" id="sMusic">Music on</button>
+      <span id="endArea"></span>
     </div>
   </div>
-  <div class="inner">
-    <div class="s-actions" id="sActions"><button type="button" id="peekBtn">Show time</button><span id="endArea"></span></div>
+  <div class="after" id="sAfter" hidden>
+    <div class="after-in">
+      <h2 class="welcome">Welcome back.</h2>
+      <p class="bead-line" id="beadLine"></p>
+      <article class="page-card" id="giftCard"></article>
+      <label for="fishNote" id="fishLabel">Did anything surface? An idea, an image. Optional.</label>
+      <textarea id="fishNote" maxlength="600"></textarea>
+      <button class="begin" type="button" id="saveBtn">Keep it</button>
+    </div>
   </div>
 </div>
 
@@ -312,36 +315,36 @@ button.bead { padding: 0; cursor: pointer; }
 
   // ---------------- content ----------------
   var TRACKS = [
-    { id: "tanpura", name: "Tanpura", by: "E\u266D drone", len: "2:48 loop", file: "music/loop-tanpura-eb.mp3" },
-    { id: "tanpura2", name: "Tanpura, second", by: "Softer drone", len: "2:02 loop", file: "music/loop-tanpura-10.mp3" },
-    { id: "bowls", name: "Singing bowls", by: "Played live", len: "2:58 loop", file: "music/loop-bowls.mp3" },
-    { id: "none", name: "Silence", by: "", len: "Bells only", file: null }
+    { id: "tanpura", name: "Tanpura", by: "A warm E♭ drone", file: "music/loop-tanpura-eb.mp3" },
+    { id: "tanpura2", name: "Tanpura, second", by: "A softer drone", file: "music/loop-tanpura-10.mp3" },
+    { id: "bowls", name: "Singing bowls", by: "Tibetan bowls, played by hand", file: "music/loop-bowls.mp3" }
   ];
-  var CREDITS = "Real recordings from Freesound, released into the public domain (CC0): \u201CTambura Eb\u201D by Kaczinski, \u201CTanpura 10\u201D by sankalp, \u201CTibetan Singing Bowls Improv\u201D by RutgerMuller. Trimmed into seamless loops.";
+  var CREDITS = "Real recordings from Freesound, given to the public domain (CC0) by their makers: “Tambura Eb” by Kaczinski, “Tanpura 10” by sankalp, “Tibetan Singing Bowls Improv” by RutgerMuller. Thank you to them.";
 
   // 108 lessons in 9 chapters, one per bead. "After X" = paraphrase; a bare name = direct quote.
-  var PATH = {"chapters": ["Beginning", "The ocean", "The big fish", "The suit", "Rest and activity", "Effortless", "Bliss within", "The work", "The unified field"], "lessons": [{"t": "The first bead", "b": "You\u2019ve started, which is the hardest part. Tomorrow, do the same thing at the same time. That\u2019s the whole plan.", "s": "Practice"}, {"t": "Twice", "b": "The morning sit clears the night. The afternoon sit clears the day. Two short dips, every day, is the rhythm Maharishi taught.", "s": "After Maharishi"}, {"t": "Same chair", "b": "A habit attaches to a place and an hour. Use the same chair at the same times, and the sitting starts to begin before you do.", "s": "Practice"}, {"t": "Not concentration", "b": "Concentration holds the mind on the surface. Meditation lets go of the surface so the mind can settle by itself.", "s": "After Maharishi"}, {"t": "Thoughts are allowed", "b": "You will think during a sit. Everyone does. Thoughts are not a mistake; they\u2019re part of how the mind settles.", "s": "Practice"}, {"t": "A sound, not a meaning", "b": "The sound is used for its sound, not its meaning. Meaning keeps the mind busy on the surface. A sound can grow faint and carry you down.", "s": "After Maharishi"}, {"t": "Coming back", "b": "Noticing you\u2019ve drifted is part of the practice, not a failure of it. Come back to the sound the way you\u2019d pick up a pen you dropped. No scolding.", "s": "Practice"}, {"t": "Falling asleep", "b": "If you fall asleep, the body needed it. When you wake, sit a few more minutes with the sound before coming out.", "s": "Practice"}, {"t": "Before food", "b": "Digestion and deep rest compete. Sit before breakfast and before dinner, not after.", "s": "Practice"}, {"t": "Two minutes", "b": "Coming out slowly is part of the sit. Jumping up straight away can leave you groggy or irritable for an hour.", "s": "Practice"}, {"t": "Day one", "b": "David Lynch learned in 1973 and said for decades afterwards that he hadn\u2019t missed a single sit. Every one of those decades started with a first week like this one.", "s": "On Lynch"}, {"t": "Learn it properly", "b": "TM is taught in person by a certified teacher, with a personal sound and checking. Lynch was firm about it: learn from a teacher. This app is the chair and the clock until then.", "s": "Practice"}, {"t": "Surface and depth", "b": "Maharishi described the mind as an ocean. Waves and noise at the top. Lower down, quieter. At the bottom, still.", "s": "After Maharishi"}, {"t": "Bubbles", "b": "A thought starts as a tiny bubble deep down and grows as it rises, until you notice it at the surface. Meditation follows the bubble back down.", "s": "After Maharishi"}, {"t": "Finer levels", "b": "As you go deeper, the sound gets fainter and finer. That fading is the dive. You\u2019re experiencing thought at quieter stages.", "s": "After Maharishi"}, {"t": "The source", "b": "Beneath the finest thought there\u2019s a level with no thought at all, only awareness. Going beyond thought is what transcending means.", "s": "After Maharishi"}, {"t": "The fourth state", "b": "We know waking, dreaming and deep sleep. Maharishi taught there is a fourth: awake inside, with nothing to be awake to. Transcendental consciousness.", "s": "After Maharishi"}, {"t": "Restful alertness", "b": "In that state the body rests very deeply while the mind stays awake. Maharishi called it restful alertness. It\u2019s the opposite of being tired and wired.", "s": "After Maharishi"}, {"t": "You may not notice", "b": "Transcending is often noticed only afterwards, as a gap: time passed and you can\u2019t say where you were. That gap is not sleep.", "s": "Practice"}, {"t": "Charm", "b": "The mind moves toward what\u2019s more charming. Quieter levels are more charming than the surface, so the mind goes down on its own if you let it.", "s": "After Maharishi"}, {"t": "The diver", "b": "A diver doesn\u2019t swim to the bottom. They take the right angle and let go. The sound is the angle; letting go is the rest.", "s": "After Maharishi"}, {"t": "Water the root", "b": "\u201cWater the root to enjoy the fruit.\u201d Don\u2019t fix every leaf of your life one by one. Go to the root, and the whole tree benefits.", "s": "Maharishi Mahesh Yogi"}, {"t": "Wave and ocean", "b": "A wave looks separate, but it is the ocean moving. Maharishi taught that the individual mind is like that: a wave on an unbounded ocean of consciousness.", "s": "After Maharishi"}, {"t": "Guru Dev", "b": "Maharishi learned from his own teacher, Swami Brahmananda Saraswati, whom he called Guru Dev. He credited everything he taught to him.", "s": "On Maharishi"}, {"t": "Ideas are like fish", "b": "\u201cIdeas are like fish. If you want to catch little fish, you can stay in the shallow water. But if you want to catch the big fish, you\u2019ve got to go deeper.\u201d", "s": "David Lynch"}, {"t": "Desire is the bait", "b": "Lynch said wanting an idea is the bait. Think about what you want to make, and ideas start to come to the hook.", "s": "After Lynch"}, {"t": "Write it down", "b": "When a fish bites, catch it. Write it down at once, however small. Lynch kept the idea; the idea told him the rest.", "s": "After Lynch"}, {"t": "Fragments", "b": "Often you catch only a fragment: a mood, a sound, one image. Lynch said a fragment attracts other fish. Keep it and more will come.", "s": "After Lynch"}, {"t": "Fall in love", "b": "Lynch said you know an idea is right when you fall in love with it. Not approve of it. Fall in love.", "s": "After Lynch"}, {"t": "Stay true", "b": "Once you have an idea you love, every decision after that gets checked against it. Lynch called that staying true to the idea.", "s": "After Lynch"}, {"t": "The milkshake", "b": "For years Lynch went to Bob\u2019s Big Boy every afternoon for a chocolate shake and sat writing ideas on napkins. A place, a time, a habit of catching.", "s": "On Lynch"}, {"t": "Daydreaming", "b": "Ideas come into open space. Let the mind wander sometimes. Lynch protected time to just sit and think.", "s": "After Lynch"}, {"t": "Intuition", "b": "Lynch called intuition the key: feeling and intellect working together. He believed meditation sharpens it.", "s": "After Lynch"}, {"t": "Deeper water", "b": "The bigger, more abstract ideas swim deeper. The quieter you can get, the more of them you meet.", "s": "After Lynch"}, {"t": "Keep a net nearby", "b": "Keep paper by your chair. Ideas often surface in the two minutes of coming up, or an hour later on a walk.", "s": "Practice"}, {"t": "Not every sit", "b": "Not every sit brings a fish. Meditation changes the water. The catching happens through the day.", "s": "Practice"}, {"t": "Negativity", "b": "\u201cNegativity is the enemy of creativity.\u201d", "s": "David Lynch"}, {"t": "The rubber suit", "b": "Lynch described anger, fear and depression as a tight rubber clown suit you can\u2019t take off. Meditation, he said, starts to dissolve it from the inside.", "s": "After Lynch"}, {"t": "Stress comes out", "b": "Deep rest lets the body release old stress. Maharishi taught that this can show up during a sit as busy thoughts or restlessness.", "s": "After Maharishi"}, {"t": "Busy sits count", "b": "A busy sit is not a bad sit. It may be one of the useful ones: something leaving.", "s": "Practice"}, {"t": "No need to suffer", "b": "Lynch rejected the idea that artists must suffer. Suffering, he said, only makes the work harder. A clear mind catches more.", "s": "After Lynch"}, {"t": "Show it, don\u2019t live it", "b": "Lynch\u2019s films go into very dark places. He said you can show suffering without suffering yourself.", "s": "After Lynch"}, {"t": "Dark and light", "b": "Lynch wasn\u2019t afraid of darkness in his work. The more settled he was inside, the further he could look into it without being swallowed.", "s": "After Lynch"}, {"t": "Grumpy afterwards", "b": "If you feel irritable after a sit, you probably came out too fast. Take the full two minutes.", "s": "Practice"}, {"t": "Not pushing away", "b": "TM doesn\u2019t suppress feelings or argue with them. It lets them settle, the way silt settles in still water.", "s": "After Maharishi"}, {"t": "Tiredness", "b": "Feeling tired in sits is common at the start. The body is catching up on rest it has been owed for a while.", "s": "Practice"}, {"t": "No grades", "b": "Don\u2019t score your sits. Deep, shallow, busy, sleepy: you showed up, and that\u2019s the part you control.", "s": "Practice"}, {"t": "The suit thins", "b": "The change is gradual. Often other people notice it before you do.", "s": "Practice"}, {"t": "The bow", "b": "To send an arrow far, you pull it back first. Meditation is the pulling back; your day is the flight.", "s": "After Maharishi"}, {"t": "The cloth", "b": "Old Indian dyers dipped cloth in colour, let the sun fade it, then dipped it again. After enough rounds the colour stays. Twice a day is the dipping.", "s": "After Maharishi"}, {"t": "Rest, then act", "b": "Maharishi taught that rest is the basis of activity. Good action comes out of good rest, not instead of it.", "s": "After Maharishi"}, {"t": "Established, then act", "b": "Maharishi often returned to a line from the Bhagavad Gita: become established in Being, then perform action.", "s": "After Maharishi"}, {"t": "Go in to come out", "b": "Meditation isn\u2019t an escape from life. You go in so you can come out and live more fully.", "s": "After Maharishi"}, {"t": "A busy monk", "b": "Maharishi wasn\u2019t a hermit. He travelled the world for decades, teaching and building schools. Silence inside, a lot of activity outside.", "s": "On Maharishi"}, {"t": "The morning sit", "b": "The morning sit sets the tone. Do your most important work in the hours right after it.", "s": "Practice"}, {"t": "The afternoon sit", "b": "By late afternoon the day has piled up. The second sit clears it, so the evening belongs to you.", "s": "Practice"}, {"t": "On set", "b": "Lynch kept both sits through long film shoots, fitting them around the work. If he could, you can fit them around a Tuesday.", "s": "On Lynch"}, {"t": "Twenty, not two hundred", "b": "More isn\u2019t better. The time is fixed at about twenty minutes. The benefit comes from the rhythm, not the length.", "s": "Practice"}, {"t": "Judge by your days", "b": "Maharishi said the results of meditation show in activity. Don\u2019t judge by how a sit felt. Judge by how your weeks go.", "s": "After Maharishi"}, {"t": "Less friction", "b": "Maharishi taught that action from a settled mind meets less resistance. He called it the support of nature.", "s": "After Maharishi"}, {"t": "Effortless", "b": "If you\u2019re trying, ease off. Effort keeps you at the surface. The less you do, the deeper you go.", "s": "After Maharishi"}, {"t": "No control", "b": "You\u2019re not steering. You start the sound, and the mind finds its own way down.", "s": "Practice"}, {"t": "Innocently", "b": "Maharishi stressed innocence: take whatever happens as it comes, with no agenda for the sit.", "s": "After Maharishi"}, {"t": "No expectations", "b": "Expecting a deep sit is the fastest way to have a busy one. Sit as if it\u2019s the first time.", "s": "Practice"}, {"t": "The pull", "b": "Happiness pulls the mind the way a slope pulls water. You don\u2019t need to push water downhill.", "s": "After Maharishi"}, {"t": "Hold it loosely", "b": "Don\u2019t grip the sound. Let it be there the way the hum of a fridge is there.", "s": "Practice"}, {"t": "It changes", "b": "The sound may speed up, slow down, blur or vanish. All of that is fine. When you notice it has gone, gently return.", "s": "Practice"}, {"t": "Both at once", "b": "You can have thoughts and the sound at the same time. No need to choose.", "s": "Practice"}, {"t": "Noise", "b": "Traffic, a dog, a neighbour. Treat outside noise like a thought: notice it, and come back easily.", "s": "Practice"}, {"t": "The body", "b": "An itch, a twitch, a warmth. Let your attention rest there for a moment if it wants to, then return to the sound.", "s": "Practice"}, {"t": "No belief needed", "b": "TM doesn\u2019t ask you to believe anything. Lynch was clear that it isn\u2019t a religion. It works the same if you\u2019re a sceptic.", "s": "After Lynch"}, {"t": "Simple", "b": "Maharishi called it simple and natural. The only way to get it wrong is to make it complicated.", "s": "After Maharishi"}, {"t": "Happiness within", "b": "Lynch said real happiness isn\u2019t out there in things. It\u2019s within, and meditation is the way to it.", "s": "After Lynch"}, {"t": "Bliss", "b": "Maharishi called the source bliss consciousness. You don\u2019t make it; you visit it, twice a day.", "s": "After Maharishi"}, {"t": "Not a struggle", "b": "Maharishi taught that life isn\u2019t meant to be a struggle. It\u2019s meant to be lived in fullness and joy.", "s": "After Maharishi"}, {"t": "Unbounded", "b": "Lynch described the deepest level as unbounded: no edges, no end. You can\u2019t picture it. You can visit it.", "s": "After Lynch"}, {"t": "The golf ball", "b": "Lynch said if your awareness is the size of a golf ball, you understand a book at golf-ball size. Expand awareness and everything you meet gets bigger.", "s": "After Lynch"}, {"t": "Quiet joy", "b": "Bliss here doesn\u2019t mean excitement. It\u2019s more like contentment with no reason attached.", "s": "Practice"}, {"t": "The world is as we are", "b": "Maharishi often said that the world we see reflects the state we\u2019re in. Change the seer, and the seen changes.", "s": "After Maharishi"}, {"t": "Forty days", "b": "Around now you\u2019ve practised for forty days. Many traditions treat forty days as a full cycle of practice.", "s": "Practice"}, {"t": "Small signs", "b": "Watch for small changes: a little more patience, better sleep, a beat of space before you react.", "s": "Practice"}, {"t": "It spreads", "b": "When you\u2019re more settled, the people around you feel it, usually before anyone says so.", "s": "Practice"}, {"t": "The giggling guru", "b": "Newspapers called Maharishi \u201cthe giggling guru\u201d because he laughed so easily. Depth doesn\u2019t have to be solemn.", "s": "On Maharishi"}, {"t": "Lightness", "b": "Lynch, who made some of the darkest films of his time, also gave cheerful daily weather reports from Los Angeles and drew the day\u2019s number. Depth and lightness together.", "s": "On Lynch"}, {"t": "The art life", "b": "As a young man Lynch decided he wanted to live \u201cthe art life\u201d: coffee, painting, working on ideas. He kept that life for good.", "s": "On Lynch"}, {"t": "A painting that moves", "b": "Lynch started as a painter. He wanted his paintings to move and make sound, and that\u2019s how he came to film.", "s": "On Lynch"}, {"t": "Five years", "b": "Lynch\u2019s first feature, Eraserhead, took about five years to make. Big fish don\u2019t come in a hurry.", "s": "On Lynch"}, {"t": "Best hours", "b": "Put your hardest work right after your morning sit, while the water is still clear.", "s": "Practice"}, {"t": "Mood", "b": "Lynch talked about the mood of a place as much as its look. A settled mind notices more of it.", "s": "After Lynch"}, {"t": "Give ideas a home", "b": "A notebook, a voice memo, a wall of cards. An idea without a home gets lost.", "s": "Practice"}, {"t": "Protect the idea", "b": "Lynch said his worst experience was a film where he didn\u2019t have the final say. Protect the idea you fell in love with.", "s": "After Lynch"}, {"t": "Give it away", "b": "In 2005 Lynch started a foundation to teach TM to students, veterans and people under stress. He spent a lot of his later life on it.", "s": "On Lynch"}, {"t": "Knowledge and consciousness", "b": "The university Maharishi founded took as its motto: knowledge is structured in consciousness. What you can know depends on the state you know it in.", "s": "On Maharishi"}, {"t": "Do less, accomplish more", "b": "Maharishi taught a principle he called doing less and accomplishing more. Rest well, then act precisely.", "s": "After Maharishi"}, {"t": "Your field", "b": "Whatever your work is, it\u2019s the same idea: go deeper, catch something, bring it up, make it real.", "s": "Practice"}, {"t": "Rest before deciding", "b": "When a big decision comes, sit first. The answer that rises afterwards is usually the clearer one.", "s": "Practice"}, {"t": "The unified field", "b": "Lynch and Maharishi both linked the source of thought with the unified field that physicists look for beneath all forces. That\u2019s their view, and it\u2019s a big one: the bottom of the mind and the bottom of nature are the same.", "s": "After Lynch and Maharishi"}, {"t": "One ocean", "b": "If every wave is the ocean, then every mind touches the same depth. That\u2019s what Maharishi meant by unity.", "s": "After Maharishi"}, {"t": "Seven states", "b": "Maharishi described seven states of consciousness: waking, dreaming, deep sleep, transcendental consciousness, and three more that grow from regular practice.", "s": "After Maharishi"}, {"t": "Cosmic consciousness", "b": "The fifth: the inner silence you touch in meditation stays with you during activity, even through sleep. Maharishi called it cosmic consciousness.", "s": "After Maharishi"}, {"t": "Refined perception", "b": "The sixth: the world starts to look finer and more beautiful, perceived in more detail. Maharishi called it God consciousness.", "s": "After Maharishi"}, {"t": "Unity", "b": "The seventh: everything is seen as the same field you met at the bottom of the ocean. Maharishi called it unity consciousness.", "s": "After Maharishi"}, {"t": "Not a ladder", "b": "Don\u2019t chase these states. Chasing is effort, and effort keeps you at the surface. They grow by themselves.", "s": "Practice"}, {"t": "Together", "b": "Maharishi believed that many people meditating together could calm a whole society. It\u2019s a debated idea. The smaller version is certain: a calmer you changes the room you\u2019re in.", "s": "After Maharishi"}, {"t": "Peace", "b": "Lynch thought real peace means more than the absence of war. He believed it starts inside individual people, one at a time.", "s": "After Lynch"}, {"t": "Rishikesh", "b": "In 1968 the Beatles spent weeks with Maharishi in Rishikesh, India, and wrote many of their songs there. Ideas surface in quiet places.", "s": "On Maharishi"}, {"t": "Fifty years", "b": "Lynch meditated twice a day for more than fifty years, until he died in January 2025. The practice was the constant under everything he made.", "s": "On Lynch"}, {"t": "The whole mala", "b": "108 dives. A mala is a circle, so the next bead starts it again. The lessons will read differently the second time, because you will be different.", "s": "Practice"}]};
+  var PATH = {"chapters": ["Beginning", "The ocean", "The big fish", "The suit", "Rest and activity", "Effortless", "Bliss within", "The work", "The unified field"], "lessons": [{"t": "Welcome", "b": "You\u2019ve started, which is the hardest part. Twenty minutes, given to yourself. Tomorrow, give them again at the same time. That\u2019s the whole plan.", "s": "Practice"}, {"t": "Twice", "b": "The morning sit clears the night. The afternoon sit clears the day. Two short dips, every day, is the rhythm Maharishi taught.", "s": "After Maharishi"}, {"t": "Same chair", "b": "A habit attaches to a place and an hour. Use the same chair at the same times, and the sitting starts to begin before you do.", "s": "Practice"}, {"t": "Not concentration", "b": "Concentration holds the mind on the surface. Meditation lets go of the surface so the mind can settle by itself.", "s": "After Maharishi"}, {"t": "Thoughts are allowed", "b": "You will think during a sit. Everyone does. Thoughts are not a mistake; they\u2019re part of how the mind settles.", "s": "Practice"}, {"t": "A sound, not a meaning", "b": "The sound is used for its sound, not its meaning. Meaning keeps the mind busy on the surface. A sound can grow faint and carry you down.", "s": "After Maharishi"}, {"t": "Coming back", "b": "Noticing you\u2019ve drifted is part of the practice, not a failure of it. Come back to the sound the way you\u2019d pick up a pen you dropped. No scolding.", "s": "Practice"}, {"t": "Falling asleep", "b": "If you fall asleep, the body needed it. When you wake, sit a few more minutes with the sound before coming out.", "s": "Practice"}, {"t": "Before food", "b": "Digestion and deep rest compete. Sit before breakfast and before dinner, not after.", "s": "Practice"}, {"t": "Two minutes", "b": "Coming out slowly is part of the sit. Jumping up straight away can leave you groggy or irritable for an hour.", "s": "Practice"}, {"t": "Day one", "b": "David Lynch learned in 1973 and said for decades afterwards that he hadn\u2019t missed a single sit. Every one of those decades started with a first week like this one.", "s": "On Lynch"}, {"t": "Learn it properly", "b": "TM is taught in person by a certified teacher, with a personal sound and checking. Lynch was firm about it: learn from a teacher. This app is the chair and the clock until then.", "s": "Practice"}, {"t": "Surface and depth", "b": "Maharishi described the mind as an ocean. Waves and noise at the top. Lower down, quieter. At the bottom, still.", "s": "After Maharishi"}, {"t": "Bubbles", "b": "A thought starts as a tiny bubble deep down and grows as it rises, until you notice it at the surface. Meditation follows the bubble back down.", "s": "After Maharishi"}, {"t": "Finer levels", "b": "As you go deeper, the sound gets fainter and finer. That fading is the dive. You\u2019re experiencing thought at quieter stages.", "s": "After Maharishi"}, {"t": "The source", "b": "Beneath the finest thought there\u2019s a level with no thought at all, only awareness. Going beyond thought is what transcending means.", "s": "After Maharishi"}, {"t": "The fourth state", "b": "We know waking, dreaming and deep sleep. Maharishi taught there is a fourth: awake inside, with nothing to be awake to. Transcendental consciousness.", "s": "After Maharishi"}, {"t": "Restful alertness", "b": "In that state the body rests very deeply while the mind stays awake. Maharishi called it restful alertness. It\u2019s the opposite of being tired and wired.", "s": "After Maharishi"}, {"t": "You may not notice", "b": "Transcending is often noticed only afterwards, as a gap: time passed and you can\u2019t say where you were. That gap is not sleep.", "s": "Practice"}, {"t": "Charm", "b": "The mind moves toward what\u2019s more charming. Quieter levels are more charming than the surface, so the mind goes down on its own if you let it.", "s": "After Maharishi"}, {"t": "The diver", "b": "A diver doesn\u2019t swim to the bottom. They take the right angle and let go. The sound is the angle; letting go is the rest.", "s": "After Maharishi"}, {"t": "Water the root", "b": "\u201cWater the root to enjoy the fruit.\u201d Don\u2019t fix every leaf of your life one by one. Go to the root, and the whole tree benefits.", "s": "Maharishi Mahesh Yogi"}, {"t": "Wave and ocean", "b": "A wave looks separate, but it is the ocean moving. Maharishi taught that the individual mind is like that: a wave on an unbounded ocean of consciousness.", "s": "After Maharishi"}, {"t": "Guru Dev", "b": "Maharishi learned from his own teacher, Swami Brahmananda Saraswati, whom he called Guru Dev. He credited everything he taught to him.", "s": "On Maharishi"}, {"t": "Ideas are like fish", "b": "\u201cIdeas are like fish. If you want to catch little fish, you can stay in the shallow water. But if you want to catch the big fish, you\u2019ve got to go deeper.\u201d", "s": "David Lynch"}, {"t": "Desire is the bait", "b": "Lynch said wanting an idea is the bait. Think about what you want to make, and ideas start to come to the hook.", "s": "After Lynch"}, {"t": "Write it down", "b": "When a fish bites, catch it. Write it down at once, however small. Lynch kept the idea; the idea told him the rest.", "s": "After Lynch"}, {"t": "Fragments", "b": "Often you catch only a fragment: a mood, a sound, one image. Lynch said a fragment attracts other fish. Keep it and more will come.", "s": "After Lynch"}, {"t": "Fall in love", "b": "Lynch said you know an idea is right when you fall in love with it. Not approve of it. Fall in love.", "s": "After Lynch"}, {"t": "Stay true", "b": "Once you have an idea you love, every decision after that gets checked against it. Lynch called that staying true to the idea.", "s": "After Lynch"}, {"t": "The milkshake", "b": "For years Lynch went to Bob\u2019s Big Boy every afternoon for a chocolate shake and sat writing ideas on napkins. A place, a time, a habit of catching.", "s": "On Lynch"}, {"t": "Daydreaming", "b": "Ideas come into open space. Let the mind wander sometimes. Lynch protected time to just sit and think.", "s": "After Lynch"}, {"t": "Intuition", "b": "Lynch called intuition the key: feeling and intellect working together. He believed meditation sharpens it.", "s": "After Lynch"}, {"t": "Deeper water", "b": "The bigger, more abstract ideas swim deeper. The quieter you can get, the more of them you meet.", "s": "After Lynch"}, {"t": "Keep a net nearby", "b": "Keep paper by your chair. Ideas often surface in the two minutes of coming up, or an hour later on a walk.", "s": "Practice"}, {"t": "Not every sit", "b": "Not every sit brings a fish. Meditation changes the water. The catching happens through the day.", "s": "Practice"}, {"t": "Negativity", "b": "\u201cNegativity is the enemy of creativity.\u201d", "s": "David Lynch"}, {"t": "The rubber suit", "b": "Lynch described anger, fear and depression as a tight rubber clown suit you can\u2019t take off. Meditation, he said, starts to dissolve it from the inside.", "s": "After Lynch"}, {"t": "Stress comes out", "b": "Deep rest lets the body release old stress. Maharishi taught that this can show up during a sit as busy thoughts or restlessness.", "s": "After Maharishi"}, {"t": "Busy sits count", "b": "A busy sit is not a bad sit. It may be one of the useful ones: something leaving.", "s": "Practice"}, {"t": "No need to suffer", "b": "Lynch rejected the idea that artists must suffer. Suffering, he said, only makes the work harder. A clear mind catches more.", "s": "After Lynch"}, {"t": "Show it, don\u2019t live it", "b": "Lynch\u2019s films go into very dark places. He said you can show suffering without suffering yourself.", "s": "After Lynch"}, {"t": "Dark and light", "b": "Lynch wasn\u2019t afraid of darkness in his work. The more settled he was inside, the further he could look into it without being swallowed.", "s": "After Lynch"}, {"t": "Grumpy afterwards", "b": "If you feel irritable after a sit, you probably came out too fast. Take the full two minutes.", "s": "Practice"}, {"t": "Not pushing away", "b": "TM doesn\u2019t suppress feelings or argue with them. It lets them settle, the way silt settles in still water.", "s": "After Maharishi"}, {"t": "Tiredness", "b": "Feeling tired in sits is common at the start. The body is catching up on rest it has been owed for a while.", "s": "Practice"}, {"t": "Be kind to yourself", "b": "Don\u2019t score your sits. Deep, shallow, busy, sleepy: you showed up for yourself, and that is already a kind thing to do.", "s": "Practice"}, {"t": "The suit thins", "b": "The change is gradual. Often other people notice it before you do.", "s": "Practice"}, {"t": "The bow", "b": "To send an arrow far, you pull it back first. Meditation is the pulling back; your day is the flight.", "s": "After Maharishi"}, {"t": "The cloth", "b": "Old Indian dyers dipped cloth in colour, let the sun fade it, then dipped it again. After enough rounds the colour stays. Twice a day is the dipping.", "s": "After Maharishi"}, {"t": "Rest, then act", "b": "Maharishi taught that rest is the basis of activity. Good action comes out of good rest, not instead of it.", "s": "After Maharishi"}, {"t": "Established, then act", "b": "Maharishi often returned to a line from the Bhagavad Gita: become established in Being, then perform action.", "s": "After Maharishi"}, {"t": "Go in to come out", "b": "Meditation isn\u2019t an escape from life. You go in so you can come out and live more fully.", "s": "After Maharishi"}, {"t": "A busy monk", "b": "Maharishi wasn\u2019t a hermit. He travelled the world for decades, teaching and building schools. Silence inside, a lot of activity outside.", "s": "On Maharishi"}, {"t": "The morning sit", "b": "The morning sit sets the tone. Do your most important work in the hours right after it.", "s": "Practice"}, {"t": "The afternoon sit", "b": "By late afternoon the day has piled up. The second sit clears it, so the evening belongs to you.", "s": "Practice"}, {"t": "On set", "b": "Lynch kept both sits through long film shoots, fitting them around the work. If he could, you can fit them around a Tuesday.", "s": "On Lynch"}, {"t": "Twenty, not two hundred", "b": "More isn\u2019t better. The time is fixed at about twenty minutes. The benefit comes from the rhythm, not the length.", "s": "Practice"}, {"t": "Judge by your days", "b": "Maharishi said the results of meditation show in activity. Don\u2019t judge by how a sit felt. Judge by how your weeks go.", "s": "After Maharishi"}, {"t": "Less friction", "b": "Maharishi taught that action from a settled mind meets less resistance. He called it the support of nature.", "s": "After Maharishi"}, {"t": "Effortless", "b": "If you\u2019re trying, ease off. Effort keeps you at the surface. The less you do, the deeper you go.", "s": "After Maharishi"}, {"t": "No control", "b": "You\u2019re not steering. You start the sound, and the mind finds its own way down.", "s": "Practice"}, {"t": "Innocently", "b": "Maharishi stressed innocence: take whatever happens as it comes, with no agenda for the sit.", "s": "After Maharishi"}, {"t": "No expectations", "b": "Expecting a deep sit is the fastest way to have a busy one. Sit as if it\u2019s the first time.", "s": "Practice"}, {"t": "The pull", "b": "Happiness pulls the mind the way a slope pulls water. You don\u2019t need to push water downhill.", "s": "After Maharishi"}, {"t": "Hold it loosely", "b": "Don\u2019t grip the sound. Let it be there the way the hum of a fridge is there.", "s": "Practice"}, {"t": "It changes", "b": "The sound may speed up, slow down, blur or vanish. All of that is fine. When you notice it has gone, gently return.", "s": "Practice"}, {"t": "Both at once", "b": "You can have thoughts and the sound at the same time. No need to choose.", "s": "Practice"}, {"t": "Noise", "b": "Traffic, a dog, a neighbour. Treat outside noise like a thought: notice it, and come back easily.", "s": "Practice"}, {"t": "The body", "b": "An itch, a twitch, a warmth. Let your attention rest there for a moment if it wants to, then return to the sound.", "s": "Practice"}, {"t": "No belief needed", "b": "TM doesn\u2019t ask you to believe anything. Lynch was clear that it isn\u2019t a religion. It works the same if you\u2019re a sceptic.", "s": "After Lynch"}, {"t": "Simple", "b": "Maharishi called it simple and natural. The only way to get it wrong is to make it complicated.", "s": "After Maharishi"}, {"t": "Happiness within", "b": "Lynch said real happiness isn\u2019t out there in things. It\u2019s within, and meditation is the way to it.", "s": "After Lynch"}, {"t": "Bliss", "b": "Maharishi called the source bliss consciousness. You don\u2019t make it; you visit it, twice a day.", "s": "After Maharishi"}, {"t": "Not a struggle", "b": "Maharishi taught that life isn\u2019t meant to be a struggle. It\u2019s meant to be lived in fullness and joy.", "s": "After Maharishi"}, {"t": "Unbounded", "b": "Lynch described the deepest level as unbounded: no edges, no end. You can\u2019t picture it. You can visit it.", "s": "After Lynch"}, {"t": "The golf ball", "b": "Lynch said if your awareness is the size of a golf ball, you understand a book at golf-ball size. Expand awareness and everything you meet gets bigger.", "s": "After Lynch"}, {"t": "Quiet joy", "b": "Bliss here doesn\u2019t mean excitement. It\u2019s more like contentment with no reason attached.", "s": "Practice"}, {"t": "The world is as we are", "b": "Maharishi often said that the world we see reflects the state we\u2019re in. Change the seer, and the seen changes.", "s": "After Maharishi"}, {"t": "Forty days", "b": "Around now you\u2019ve practised for forty days. Many traditions treat forty days as a full cycle of practice.", "s": "Practice"}, {"t": "Small signs", "b": "Watch for small changes: a little more patience, better sleep, a beat of space before you react.", "s": "Practice"}, {"t": "Love and God", "b": "Maharishi wrote a small book called Love and God. In it, love is what a full heart does by nature: the more bliss inside, the more love flows out to everything.", "s": "After Maharishi"}, {"t": "The giggling guru", "b": "Newspapers called Maharishi \u201cthe giggling guru\u201d because he laughed so easily. Depth doesn\u2019t have to be solemn.", "s": "On Maharishi"}, {"t": "Lightness", "b": "Lynch, who made some of the darkest films of his time, also gave cheerful daily weather reports from Los Angeles and drew the day\u2019s number. Depth and lightness together.", "s": "On Lynch"}, {"t": "The art life", "b": "As a young man Lynch decided he wanted to live \u201cthe art life\u201d: coffee, painting, working on ideas. He kept that life for good.", "s": "On Lynch"}, {"t": "A painting that moves", "b": "Lynch started as a painter. He wanted his paintings to move and make sound, and that\u2019s how he came to film.", "s": "On Lynch"}, {"t": "Five years", "b": "Lynch\u2019s first feature, Eraserhead, took about five years to make. Big fish don\u2019t come in a hurry.", "s": "On Lynch"}, {"t": "Best hours", "b": "Put your hardest work right after your morning sit, while the water is still clear.", "s": "Practice"}, {"t": "Mood", "b": "Lynch talked about the mood of a place as much as its look. A settled mind notices more of it.", "s": "After Lynch"}, {"t": "Give ideas a home", "b": "A notebook, a voice memo, a wall of cards. An idea without a home gets lost.", "s": "Practice"}, {"t": "Protect the idea", "b": "Lynch said his worst experience was a film where he didn\u2019t have the final say. Protect the idea you fell in love with.", "s": "After Lynch"}, {"t": "Give it away", "b": "In 2005 Lynch started a foundation to teach TM to students, veterans and people under stress. He spent a lot of his later life on it.", "s": "On Lynch"}, {"t": "Knowledge and consciousness", "b": "The university Maharishi founded took as its motto: knowledge is structured in consciousness. What you can know depends on the state you know it in.", "s": "On Maharishi"}, {"t": "Do less, accomplish more", "b": "Maharishi taught a principle he called doing less and accomplishing more. Rest well, then act precisely.", "s": "After Maharishi"}, {"t": "Your field", "b": "Whatever your work is, it\u2019s the same idea: go deeper, catch something, bring it up, make it real.", "s": "Practice"}, {"t": "Sit for someone", "b": "Some days, sit for someone you love. You can\u2019t hand them your quiet, but you come back softer, and they get that.", "s": "Practice"}, {"t": "The unified field", "b": "Lynch and Maharishi both linked the source of thought with the unified field that physicists look for beneath all forces. That\u2019s their view, and it\u2019s a big one: the bottom of the mind and the bottom of nature are the same.", "s": "After Lynch and Maharishi"}, {"t": "One ocean", "b": "If every wave is the ocean, then every mind touches the same depth. That\u2019s what Maharishi meant by unity.", "s": "After Maharishi"}, {"t": "Seven states", "b": "Maharishi described seven states of consciousness: waking, dreaming, deep sleep, transcendental consciousness, and three more that grow from regular practice.", "s": "After Maharishi"}, {"t": "Cosmic consciousness", "b": "The fifth: the inner silence you touch in meditation stays with you during activity, even through sleep. Maharishi called it cosmic consciousness.", "s": "After Maharishi"}, {"t": "Refined perception", "b": "The sixth: the world starts to look finer and more beautiful, perceived in more detail. Maharishi called it God consciousness.", "s": "After Maharishi"}, {"t": "Unity", "b": "The seventh: everything is seen as the same field you met at the bottom of the ocean. Maharishi called it unity consciousness.", "s": "After Maharishi"}, {"t": "Not a ladder", "b": "Don\u2019t chase these states. Chasing is effort, and effort keeps you at the surface. They grow by themselves.", "s": "Practice"}, {"t": "Together", "b": "Maharishi believed that many people meditating together could calm a whole society. It\u2019s a debated idea. The smaller version is certain: a calmer you changes the room you\u2019re in.", "s": "After Maharishi"}, {"t": "Peace", "b": "Lynch thought real peace means more than the absence of war. He believed it starts inside individual people, one at a time.", "s": "After Lynch"}, {"t": "Rishikesh", "b": "In 1968 the Beatles spent weeks with Maharishi in Rishikesh, India, and wrote many of their songs there. Ideas surface in quiet places.", "s": "On Maharishi"}, {"t": "Fifty years", "b": "Lynch meditated twice a day for more than fifty years, until he died in January 2025. The practice was the constant under everything he made.", "s": "On Lynch"}, {"t": "The whole mala", "b": "108 dives. A mala is a circle, so the next bead starts it again. The lessons will read differently the second time, because you will be different.", "s": "Practice"}]};
 
   var MILESTONES = {
-    1: "Your first bead. The thread begins here.",
-    2: "Morning and afternoon. The rhythm has started.",
-    14: "A full week of twice a day.",
-    42: "Three weeks. This is where a habit starts to hold.",
+    1: "Your first bead. Thank you for beginning.",
+    2: "Morning and afternoon. The rhythm has begun.",
+    14: "A whole week of twice a day.",
+    42: "Three weeks. The habit is starting to hold you.",
     80: "Forty days. In the old traditions, a complete practice.",
-    108: "A whole mala. 108 dives."
+    108: "A whole mala. 108 dives, and a lot of love for yourself."
   };
 
   var GUIDE = [
-    { h: "Twice a day, twenty minutes.", p: "Transcendental Meditation is simple. Sit in a chair, close your eyes, and let the mind settle on its own. No concentrating, no emptying your head.", n: "Maharishi Mahesh Yogi brought it from India to the world in 1958. David Lynch learned it in 1973 and spent the rest of his life sharing it." },
-    { h: "Surface to source.", p: "Maharishi drew the mind as an ocean. Busy thoughts at the surface, finer and quieter ones further down, and at the bottom, the source of thought itself.", n: "That’s the diagram on the first screen. A meditation is a dive to the bottom and back. Lynch said that’s where the big fish are." },
-    { h: "When and where.", p: "Morning before breakfast, afternoon before dinner. A chair, back supported, phone on Do Not Disturb. Not right after eating, and not lying down.", n: "Maharishi compared it to dyeing cloth: dip it, let the sun fade it, dip it again. Over time the colour holds. Twice a day is the dipping." },
-    { h: "The sound.", p: "In TM a teacher gives you a personal mantra, a sound with no meaning. Until you have one, silently use the word “one”.", n: "That isn’t TM itself. It’s a close cousin (Herbert Benson’s relaxation response) that builds the habit until you learn properly." },
-    { h: "Think it faintly.", p: "After half a minute with eyes closed, start thinking the sound. Softly, like a whisper you can barely hear. Let it change, fade, or speed up.", n: "When you notice you’ve drifted into thoughts, gently come back to the sound. That is the whole method." },
-    { h: "Everything counts.", p: "Thoughts will come. You might feel restless, itchy, sleepy. You might fall asleep. All normal.", n: "Maharishi taught that busy sits are the body releasing stress while it rests deeply. Lynch called it the tight suit of negativity dissolving." },
-    { h: "Come up slowly.", p: "A bell ends the twenty minutes. Let the sound go and stay sitting with your eyes closed for two more minutes. A double chime: open your eyes.", n: "Each sit adds a bead to your mala of 108 and opens the next of 108 short lessons from Maharishi and Lynch. When you’re ready for the real thing, find a teacher.", end: true }
+    { h: "Twice a day, twenty minutes.", p: "Transcendental Meditation is simple. Sit in a chair, close your eyes, and let the mind settle on its own. No concentrating, no emptying your head.", n: "Maharishi Mahesh Yogi brought it from India to the world in 1958. David Lynch learned it in 1973 and spent the rest of his life giving it away." },
+    { h: "An ocean inside.", p: "Maharishi described the mind as an ocean. Busy waves at the surface, quieter water below, and at the bottom, stillness: the source of thought.", n: "That’s the sea on the first screen. A meditation is a dive to the bottom and back. Lynch said that’s where the big fish are." },
+    { h: "When and where.", p: "Morning before breakfast, afternoon before dinner. A chair, back supported, phone on Do Not Disturb. Not right after eating, and not lying down.", n: "Maharishi compared it to dyeing cloth: dip it, let the sun fade it, dip it again, until the colour holds." },
+    { h: "The sound.", p: "In TM a teacher gives you a personal mantra, a sound with no meaning. Until you have one, silently use the word “one”.", n: "That isn’t TM itself. It’s a close cousin, Herbert Benson’s relaxation response, to hold the habit until you learn properly." },
+    { h: "Think it faintly.", p: "After half a minute with eyes closed, start thinking the sound. Softly, like a whisper you can barely hear. Let it change, fade, or wander.", n: "When you notice you’ve drifted into thoughts, come back to the sound, gently, the way you’d pick up something you love." },
+    { h: "Everything counts.", p: "Thoughts will come. You might feel restless, sleepy, emotional. You might fall asleep. All of it is normal.", n: "Maharishi taught that busy sits are the body letting go of stress. Lynch called it the tight suit of negativity dissolving." },
+    { h: "Come up slowly.", p: "A bell ends the twenty minutes. Let the sound go and stay sitting with your eyes closed for two more minutes. A double chime: open your eyes.", n: "Each sit adds a bead to your mala and opens one of 108 short lessons. When you’re ready for the real thing, find a teacher.", end: true }
   ];
 
   var SETTLE = 30, REST = 120, MALA = 108;
+  var ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
 
   // ---------------- helpers ----------------
   function $(id) { return document.getElementById(id); }
@@ -356,36 +359,118 @@ button.bead { padding: 0; cursor: pointer; }
   var SVGNS = "http://www.w3.org/2000/svg";
   function svgEl(tag, attrs) { var e = document.createElementNS(SVGNS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
   function lessonFor(n) { var i = (((n - 1) % 108) + 108) % 108, l = PATH.lessons[i]; return { n: i + 1, t: l.t, b: l.b, s: l.s, ch: PATH.chapters[Math.floor(i / 12)], chn: Math.floor(i / 12) + 1 }; }
+  var still = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-  // ---------------- the diagram ----------------
-  // Levels of the mind, sparse at the surface and closer together toward the source.
-  var DW = 320, DH = 220, TOP = 10, BOT = 204, LEFT = 0, RIGHT = 320, LEVELS = 12;
-  function depthY(d) { return TOP + (BOT - TOP) * Math.pow(Math.max(0, Math.min(1, d)), 0.62); }
-  function drawDiagram(svg) {
-    svg.textContent = "";
-    for (var i = 0; i < LEVELS; i++) {
-      var t = i / (LEVELS - 1), y = depthY(t);
-      svg.appendChild(svgEl("line", { x1: LEFT, x2: RIGHT, y1: y.toFixed(2), y2: y.toFixed(2), "class": "lvl-line" + (i === 0 || i === LEVELS - 1 ? " edge" : "") }));
+  // ---------------- the painted sea ----------------
+  var PALETTES = {
+    day: { sky: ["#f0c6ab", "#fae8d7"], sun: "#f2a23c", glow: "242,162,60", sunX: 0.3, light: "255,246,232",
+      sea: ["#a3c1c7", "#76a0b0", "#527f97", "#38627e", "#264964", "#19364e", "#11273c", "#0b1b2c"], source: "255,196,150" },
+    dusk: { sky: ["#e4977a", "#f6d3ad"], sun: "#ee8a3a", glow: "238,138,58", sunX: 0.7, light: "255,232,205",
+      sea: ["#98a9b8", "#69839c", "#49647f", "#334c68", "#233953", "#192a42", "#101d31", "#0a1424"], source: "255,178,140" },
+    night: { sky: ["#10142e", "#2c2852"], sun: "#f2e3c2", glow: "242,227,194", sunX: 0.72, light: "242,227,194",
+      sea: ["#35496b", "#2a3d5e", "#213150", "#1a2744", "#131e37", "#0e172c", "#091022", "#060b19"], source: "240,170,150" }
+  };
+  function period() { var h = new Date().getHours(); return h >= 5 && h < 14 ? "day" : h >= 14 && h < 19 ? "dusk" : "night"; }
+  function hash(n) { var x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); }
+
+  function makeScene(canvas, opt) {
+    var ctx = canvas.getContext("2d"), st = { depth: 0, w: 0, h: 0, dpr: 1, grain: null, running: false, last: 0, raf: 0, motes: [], prevT: 0 };
+    var fps = opt.fps || 30, horizonAt = opt.horizon || 0.5;
+    for (var i = 0; i < (opt.motes || 12); i++) st.motes.push({ x: hash(i + 1), y: hash(i + 50), r: 0.6 + hash(i + 99) * 1.8, sp: 0.012 + hash(i + 7) * 0.02, sw: hash(i + 3) * 6.28 });
+    function size() {
+      var r = canvas.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+      var w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+      if (w !== st.w || h !== st.h) { canvas.width = w; canvas.height = h; st.w = w; st.h = h; st.dpr = dpr; }
+      if (!st.grain) {
+        var g = document.createElement("canvas"); g.width = g.height = 140;
+        var gc = g.getContext("2d"), img = gc.createImageData(140, 140);
+        for (var i = 0; i < img.data.length; i += 4) { var v = 128 + (Math.random() - 0.5) * 110; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+        gc.putImageData(img, 0, 0); st.grain = ctx.createPattern(g, "repeat");
+      }
     }
-    var labels = [[0, "Surface · active thinking"], [0.42, "Finer levels"], [1, "Source · pure consciousness"]];
-    labels.forEach(function (l) {
-      var y = depthY(l[0]);
-      svg.appendChild(svgEl("text", { x: RIGHT, y: (l[0] === 1 ? y + 13 : y - 5).toFixed(2), "text-anchor": "end", "class": "lvl-label" })).textContent = l[1];
-    });
-    var dot = svgEl("circle", { cx: 34, cy: depthY(0), r: 7, "class": "dot" });
-    svg.appendChild(dot);
-    return dot;
+    function draw(t) {
+      size();
+      var W = st.w, H = st.h, P = PALETTES[period()], d = st.depth;
+      var horizon = H * horizonAt, deep = H * 2.4, cam = d * deep, dt = st.prevT ? Math.min(100, t - st.prevT) : 16; st.prevT = t;
+      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+      // sky
+      var skyBottom = horizon - cam;
+      if (skyBottom > 0) {
+        var sg = ctx.createLinearGradient(0, -cam, 0, skyBottom); sg.addColorStop(0, P.sky[0]); sg.addColorStop(1, P.sky[1]);
+        ctx.fillStyle = sg; ctx.fillRect(0, 0, W, skyBottom + 4);
+        // sun or moon, with a soft halo
+        var sx = W * P.sunX, sy = horizon - H * 0.13 - cam, sr = Math.min(W, H) * 0.065;
+        var hg = ctx.createRadialGradient(sx, sy, sr * 0.6, sx, sy, sr * 5);
+        hg.addColorStop(0, "rgba(" + P.glow + ",0.45)"); hg.addColorStop(1, "rgba(" + P.glow + ",0)");
+        ctx.fillStyle = hg; ctx.fillRect(sx - sr * 5, sy - sr * 5, sr * 10, sr * 10);
+        ctx.fillStyle = P.sun; ctx.beginPath(); ctx.arc(sx, sy, sr, 0, 6.2832); ctx.fill();
+      }
+      // the sea: layers of water, quieter and darker as they go down
+      var N = P.sea.length;
+      for (var i = 0; i < N; i++) {
+        var f = i / N, top = horizon + (deep + H * 0.9) * Math.pow(f, 1.45) - cam;
+        if (top > H + 20) break;
+        var amp = H * (i === 0 ? 0.012 : 0.022 * (1 - f * 0.75));
+        ctx.beginPath(); ctx.moveTo(-2, H + 2);
+        for (var k = 0; k <= 40; k++) {
+          var x = (k / 40) * (W + 4) - 2, u = x / W;
+          var y = top + amp * (Math.sin(u * 6.28 * (1.2 + i * 0.23) + t * 0.00022 * (1 + i * 0.18) + i * 1.7) * 0.62 + Math.sin(u * 6.28 * (2.9 + i * 0.41) - t * 0.00035 + i * 0.9) * 0.38);
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W + 2, H + 2); ctx.closePath();
+        ctx.fillStyle = P.sea[i]; ctx.fill();
+        ctx.strokeStyle = "rgba(" + P.light + "," + (0.16 * (1 - f)) + ")"; ctx.lineWidth = st.dpr; ctx.stroke();
+      }
+      // light on the water under the sun
+      if (skyBottom > -H * 0.05 && skyBottom < H) {
+        var gx0 = W * P.sunX;
+        for (var j = 0; j < 16; j++) {
+          var gy = skyBottom + H * 0.012 + j * H * 0.011, gw = W * (0.05 - j * 0.0022) * (0.6 + hash(j) * 0.8);
+          var gx = gx0 + (hash(j + 20) - 0.5) * W * (0.08 + j * 0.01);
+          var a = (0.55 - j * 0.03) * (0.45 + 0.55 * Math.sin(t * 0.0016 + j * 1.9));
+          if (a <= 0) continue;
+          ctx.strokeStyle = "rgba(" + P.light + "," + a.toFixed(3) + ")"; ctx.lineWidth = 1.4 * st.dpr; ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(gx - gw / 2, gy); ctx.lineTo(gx + gw / 2, gy); ctx.stroke();
+        }
+      }
+      // the source: warm light at the bottom of the ocean
+      var srcY = horizon + deep + H * 0.85 - cam;
+      if (srcY - H * 1.1 < H) {
+        var rg = ctx.createRadialGradient(W / 2, srcY, 0, W / 2, srcY, H * 1.1);
+        rg.addColorStop(0, "rgba(" + P.source + ",0.75)"); rg.addColorStop(0.35, "rgba(" + P.source + ",0.22)"); rg.addColorStop(1, "rgba(" + P.source + ",0)");
+        ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+      }
+      // thoughts rising like bubbles, as Maharishi described
+      var seaTop = horizon - cam;
+      for (var m = 0; m < st.motes.length; m++) {
+        var mo = st.motes[m];
+        if (!still) { mo.y -= mo.sp * dt / 1000; if (mo.y < 0) { mo.y = 1; mo.x = Math.random(); } }
+        var my = seaTop + H * 0.06 + mo.y * (deep + H * 0.8), mx = (mo.x + 0.015 * Math.sin(t * 0.0006 + mo.sw)) * W;
+        if (my < seaTop + H * 0.04 || my > H + 10 || my < -10) continue;
+        ctx.fillStyle = "rgba(" + P.light + ",0.28)"; ctx.beginPath(); ctx.arc(mx, my, mo.r * st.dpr * 1.6, 0, 6.2832); ctx.fill();
+      }
+      // paper grain
+      ctx.globalCompositeOperation = "overlay"; ctx.globalAlpha = 0.09; ctx.fillStyle = st.grain; ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+    }
+    function frame(t) { if (!st.running) return; if (t - st.last >= 1000 / fps) { st.last = t; draw(t); } st.raf = requestAnimationFrame(frame); }
+    return {
+      start: function () { if (still) { draw(performance.now()); return; } if (st.running) return; st.running = true; st.raf = requestAnimationFrame(frame); },
+      stop: function () { st.running = false; cancelAnimationFrame(st.raf); },
+      depth: function (v) { st.depth = v; if (still) draw(performance.now()); },
+      redraw: function () { draw(performance.now()); }
+    };
   }
-  var homeDot = drawDiagram($("homeDiagram"));
-  var sDot = drawDiagram($("sDiagram"));
-  function placeDot(dot, d) { dot.setAttribute("cy", depthY(d).toFixed(2)); }
+  var homeScene = makeScene($("homeScene"), { horizon: 0.55, motes: 8, fps: 30 });
+  var sitScene = makeScene($("sScene"), { horizon: 0.5, motes: 22, fps: 20 });
 
   // ---------------- state ----------------
   var store = { mode: "loading", db: null, uid: null, days: {}, settings: null };
   var ui = {
     slot: new Date().getHours() < 12 ? "morning" : "afternoon",
     dur: lsGet("dive.dur", 20), track: lsGet("dive.track", "tanpura"), vol: lsGet("dive.vol", 0.6),
-    musicMode: lsGet("dive.musicMode", "fade"), guideIdx: 0, confirmClear: false, lesson: 0
+    musicOn: lsGet("dive.musicOn", true), musicMode: lsGet("dive.musicMode", "fade"),
+    guideIdx: 0, confirmClear: false, lesson: 0
   };
   if ([10, 15, 20].indexOf(ui.dur) < 0) ui.dur = 20;
   if (!TRACKS.some(function (t) { return t.id === ui.track; })) ui.track = TRACKS[0].id;
@@ -446,6 +531,7 @@ button.bead { padding: 0; cursor: pointer; }
       if (was && n === v) { sec.classList.remove("view"); void sec.offsetWidth; sec.classList.add("view"); }
       var a = $("nav-" + n); if (n === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
+    if (v === "home") homeScene.start(); else homeScene.stop();
     if (v !== "music") stopPreview();
     window.scrollTo(0, 0); render();
   }
@@ -454,44 +540,57 @@ button.bead { padding: 0; cursor: pointer; }
   function untilText(now, hhmm) {
     var p = hhmm.split(":"), t = new Date(now.getFullYear(), now.getMonth(), now.getDate(), +p[0], +p[1]);
     var diff = Math.round((t - now) / 60000);
-    if (diff > 60) { var hh = Math.floor(diff / 60), mm = diff % 60; return "in " + hh + " h" + (mm ? " " + mm + " min" : ""); }
-    if (diff > 5) return "in " + diff + " min";
-    if (diff < -120) return "whenever you’re ready";
-    return "now";
+    if (diff > 60) { var hh = Math.floor(diff / 60), mm = diff % 60; return "Your sit is at " + hhmm + ", in " + hh + " h" + (mm ? " " + mm + " min" : "") + "."; }
+    if (diff > 5) return "Your sit is at " + hhmm + ", in " + diff + " minutes.";
+    return "Whenever you’re ready.";
+  }
+
+  function lessonInto(box, L, extra) {
+    box.textContent = "";
+    box.append(el("span", "eyebrow", "Lesson " + L.n + " · " + ROMAN[L.chn - 1] + " · " + L.ch), el("h3", "t", L.t), el("p", "b", L.b), el("span", "s", L.s));
+    if (extra) box.append(extra);
   }
 
   function render() {
-    var now = new Date(), h = now.getHours();
-    document.documentElement.setAttribute("data-sky", h >= 5 && h < 15 ? "day" : "night");
+    var now = new Date(), h = now.getHours(), per = period();
+    document.documentElement.setAttribute("data-sky", per);
     $("dateLine").textContent = now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
     $("numberLine").textContent = "Today’s number is " + (((dayNumber(now) * 7 + 3) % 10) + 1);
 
     var tk = todayKey(), today = store.days[tk] || {}, t = times(), tot = totals();
     var mDone = done(today, "morning"), aDone = done(today, "afternoon");
-    $("beadMini").textContent = tot.sits ? "Bead " + beadOf(tot.sits) + " of 108" : "Your mala is empty";
 
-    $("title").textContent = (mDone && aDone) ? "Done today" : (ui.slot === "morning" ? "Morning" : "Afternoon");
-    $("minsBig").textContent = ui.dur;
+    $("greet").textContent = (mDone && aDone) ? "Thank you for today." : (h < 5 ? "Still awake." : h < 12 ? "Good morning." : h < 18 ? "Good afternoon." : "Good evening.");
     var when;
-    if (mDone && aDone) when = "Both dives done. The thread continues tomorrow.";
-    else if (!done(today, ui.slot)) when = (missedYesterday(now) && !mDone && !aDone) ? "Yesterday slipped by. Today keeps the thread." : "Your " + ui.slot + " sit, " + untilText(now, t[ui.slot]) + ".";
-    else when = ui.slot === "morning" ? "Afternoon sit " + untilText(now, t.afternoon) + "." : "Next sit tomorrow morning.";
+    if (mDone && aDone) when = "Both dives done. Be gentle with the evening.";
+    else if (done(today, ui.slot)) when = ui.slot === "morning" ? "Morning done. " + untilText(now, t.afternoon) : "Afternoon done. See you in the morning.";
+    else if (missedYesterday(now) && !mDone && !aDone) when = "Yesterday slipped by. That’s alright. Today the thread continues.";
+    else when = "Twenty minutes, just for you. " + untilText(now, t[ui.slot]);
     $("whenLine").textContent = when;
-    $("beginText").textContent = done(today, ui.slot) ? "Sit again" : "Begin";
+    $("beginText").textContent = done(today, ui.slot) ? "Sit again" : "Begin the " + ui.slot + " sit";
+    $("beginMins").textContent = ui.dur + " min";
 
     [["morning", mDone], ["afternoon", aDone]].forEach(function (x) {
       var b = $("slot-" + x[0]); b.setAttribute("aria-pressed", String(ui.slot === x[0]));
-      b.querySelector(".sq").classList.toggle("on", x[1]);
+      b.querySelector(".pip").classList.toggle("on", x[1]);
     });
-    [10, 15, 20].forEach(function (d) { $("len-" + d).setAttribute("aria-pressed", String(ui.dur === d)); });
+    $("lenChip").textContent = ui.dur + " min";
+    var tr = TRACKS.filter(function (x) { return x.id === ui.track; })[0];
+    $("musicChip").textContent = ui.musicOn ? "♪ " + tr.name : "Music off";
+    $("musicChip").setAttribute("aria-pressed", String(ui.musicOn));
 
-    var tb = $("teachBox"); tb.textContent = "";
+    var card = $("lessonCard");
     if (tot.sits) {
-      var cur = lessonFor(beadOf(tot.sits)), nxt = lessonFor(beadOf(tot.sits) + 1);
-      tb.append(el("span", "caps small", "Lesson " + cur.n + " \u00B7 " + cur.ch), el("p", "title-s", cur.t), el("p", "text", cur.b), el("span", "who", cur.s));
-      var more = el("p", "sealed"); more.append(document.createTextNode("Next: \u201C" + nxt.t + "\u201D opens after your next sit. "));
-      var all = el("a", "", "All lessons"); all.href = "#practice"; more.append(all); tb.append(more);
-    } else tb.append(el("span", "caps small", "Lesson 1 \u00B7 Beginning"), el("p", "sealed", "108 short lessons from Maharishi and Lynch, one for each bead. The first opens after your first sit."));
+      var more = el("p", "more"); var nxt = lessonFor(beadOf(tot.sits) + 1);
+      more.append(document.createTextNode("Next, after your next sit: “" + nxt.t + "”. "));
+      var all = el("a", "", "All lessons"); all.href = "#practice"; more.append(all);
+      lessonInto(card, lessonFor(beadOf(tot.sits)), more);
+    } else {
+      card.textContent = "";
+      card.append(el("span", "eyebrow", "108 lessons"), el("h3", "t", "A path, one bead at a time"),
+        el("p", "b", "Each sit opens a short lesson from Maharishi Mahesh Yogi and David Lynch, from the first breath of practice to the bottom of the ocean."),
+        el("span", "small", "The first one opens after your first sit."));
+    }
 
     var v = currentView();
     if (v === "guide") renderGuide();
@@ -499,49 +598,80 @@ button.bead { padding: 0; cursor: pointer; }
     if (v === "music") renderMusic();
   }
 
-  // gentle drift of the point on the home diagram
-  (function idle() {
-    var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    function f(t) { placeDot(homeDot, 0.012 + 0.012 * Math.sin(t / 2600)); if (!still) requestAnimationFrame(f); }
-    requestAnimationFrame(f);
-  })();
-
   // guide
   function renderGuide() {
     var g = GUIDE[ui.guideIdx], c = $("card"); c.textContent = "";
-    c.append(el("span", "num", pad(ui.guideIdx + 1)), el("h4", "", g.h), el("p", "", g.p), el("p", "note", g.n));
+    c.append(el("span", "num", (ui.guideIdx + 1) + " of " + GUIDE.length), el("h4", "", g.h), el("p", "", g.p), el("p", "note", g.n));
     if (g.end) {
       var row = el("p", "small");
       var a1 = el("a", "", "tm.org"); a1.href = "https://www.tm.org"; a1.target = "_blank"; a1.rel = "noopener";
       var a2 = el("a", "", "David Lynch Foundation"); a2.href = "https://www.davidlynchfoundation.org"; a2.target = "_blank"; a2.rel = "noopener";
       row.append(document.createTextNode("Teachers: "), a1, document.createTextNode(" · "), a2);
-      var b = el("button", "solid", "Start my first sit"); b.type = "button";
+      var b = el("button", "pill", "Begin my first sit"); b.type = "button";
       b.onclick = function () { lsSet("dive.guided", true); location.hash = ""; begin(); };
       c.append(row, b);
     }
-    var ticks = $("gTicks"); ticks.textContent = "";
-    GUIDE.forEach(function (_, i) { ticks.append(el("span", i <= ui.guideIdx ? "on" : "")); });
+    var dots = $("gDots"); dots.textContent = "";
+    GUIDE.forEach(function (_, i) { dots.append(el("span", i <= ui.guideIdx ? "on" : "")); });
     $("gPrev").disabled = ui.guideIdx === 0; $("gNext").disabled = ui.guideIdx === GUIDE.length - 1;
   }
   $("gPrev").onclick = function () { if (ui.guideIdx > 0) { ui.guideIdx--; renderGuide(); } };
   $("gNext").onclick = function () { if (ui.guideIdx < GUIDE.length - 1) { ui.guideIdx++; renderGuide(); if (ui.guideIdx === GUIDE.length - 1) lsSet("dive.guided", true); } };
 
-  // practice
+  // the mala: 108 beads on a thread, a guru bead and a tassel
+  function drawMala(svg, bead) {
+    svg.textContent = "";
+    var defs = svgEl("defs", {}), g = svgEl("radialGradient", { id: "wood", cx: "35%", cy: "35%", r: "70%" });
+    var s1 = svgEl("stop", { offset: "0%" }); s1.setAttribute("style", "stop-color: var(--wood-a)");
+    var s2 = svgEl("stop", { offset: "100%" }); s2.setAttribute("style", "stop-color: var(--wood-b)");
+    g.append(s1, s2); defs.append(g); svg.append(defs);
+    var R = 118, gap = 0.2;
+    svg.append(svgEl("circle", { cx: 0, cy: 0, r: R, "class": "thread" }));
+    for (var k = 0; k < MALA; k++) {
+      var a = Math.PI / 2 + gap / 2 + (2 * Math.PI - gap) * (k / (MALA - 1));
+      var n = k + 1, cls = n < bead ? "bd on" : n === bead ? "bd now" : "bd off";
+      svg.append(svgEl("circle", { cx: (Math.cos(a) * R).toFixed(2), cy: (Math.sin(a) * R).toFixed(2), r: 3.2, "class": cls }));
+    }
+    svg.append(svgEl("circle", { cx: 0, cy: R + 11, r: 7.5, "class": "guru" }));
+    for (var x = -7; x <= 7; x += 1.75) svg.append(svgEl("line", { x1: x * 0.3, y1: R + 19, x2: x, y2: R + 58 + Math.abs(x) * -0.6, "class": "tassel" }));
+  }
+
   function renderPractice(now, today, tot) {
     var bead = beadOf(tot.sits), malas = tot.sits ? Math.floor((tot.sits - 1) / MALA) : 0;
+    drawMala($("malaSvg"), bead);
     $("beadCount").textContent = bead;
-    $("malaNote").textContent = "of 108 beads" + (malas ? ", mala " + (malas + 1) : "") + ". " + (tot.sits ? (MALA - bead ? (MALA - bead) + " to go." : "Complete.") : "Each sit is one.");
-    var bx = $("beads"); bx.textContent = "";
-    var unlocked = tot.sits >= MALA ? MALA : bead;   // after a full mala every lesson stays open
+    $("beadOf").textContent = "of 108" + (malas ? " · mala " + (malas + 1) : "");
+    $("malaNote").textContent = tot.sits ? (MALA - bead ? (MALA - bead) + " beads to the tassel. Each sit opens a lesson." : "A whole mala. The next sit begins a new one.") : "Each sit is a bead. Each bead opens a lesson.";
+
+    var unlocked = tot.sits >= MALA ? MALA : bead;
     if (!ui.lesson || ui.lesson > unlocked) ui.lesson = unlocked;
-    for (var b = 1; b <= MALA; b++) (function (n) {
-      var cls = "bead" + (n <= bead ? (n === bead ? " on last" : " on") : "") + (n === ui.lesson ? " sel" : "");
-      if (n <= unlocked) {
-        var btn = el("button", cls); btn.type = "button"; btn.setAttribute("aria-label", "Lesson " + n + ": " + lessonFor(n).t);
-        btn.onclick = function () { ui.lesson = n; render(); }; bx.append(btn);
-      } else bx.append(el("span", cls));
-    })(b);
-    renderLesson(unlocked);
+    var rc = $("readerCard");
+    if (!unlocked) { rc.hidden = true; }
+    else {
+      rc.hidden = false;
+      var nav = el("div", "lnav");
+      var prev = el("button", "", "← Previous"); prev.type = "button"; prev.disabled = ui.lesson <= 1; prev.onclick = function () { ui.lesson--; render(); };
+      var next = el("button", "", "Next →"); next.type = "button"; next.disabled = ui.lesson >= unlocked; next.onclick = function () { ui.lesson++; render(); };
+      nav.append(prev, next);
+      lessonInto(rc, lessonFor(ui.lesson), nav);
+    }
+
+    // the path, chapter by chapter
+    var toc = $("toc"); toc.textContent = "";
+    for (var c = 0; c < 9; c++) {
+      var first = c * 12 + 1, box = el("div", "ch"), name = el("span", "ch-name", ROMAN[c] + ". " + PATH.chapters[c]);
+      if (first > unlocked) { name.append(el("small", "", "opens at bead " + first)); box.append(name); toc.append(box); if (first > unlocked + 12) break; continue; }
+      box.append(name);
+      var ol = el("ol");
+      for (var n = first; n < first + 12; n++) (function (n) {
+        var li = el("li");
+        if (n <= unlocked) { var b = el("button", "", n + ". " + lessonFor(n).t); b.type = "button"; if (n === ui.lesson) b.setAttribute("aria-current", "true"); b.onclick = function () { ui.lesson = n; render(); $("readerCard").scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" }); }; li.append(b); }
+        else li.append(el("span", "", n + ". · · ·"));
+        ol.append(li);
+      })(n);
+      box.append(ol); toc.append(box);
+    }
+
     $("figThread").textContent = thread(now); $("figSits").textContent = tot.sits;
     var hrs = tot.mins / 60; $("figHours").textContent = hrs < 10 ? hrs.toFixed(1) : Math.round(hrs);
 
@@ -576,12 +706,12 @@ button.bead { padding: 0; cursor: pointer; }
     if (document.activeElement !== $("t-afternoon")) $("t-afternoon").value = t.afternoon;
 
     var list = $("catchList"); list.textContent = ""; var items = [];
-    Object.keys(store.days).forEach(function (k) { var d = store.days[k]; ["morning", "afternoon"].forEach(function (s) { if (d && d[s] && d[s].note) items.push({ k: k, s: s, note: d[s].note, at: d[s].endedAt || k }); }); });
+    Object.keys(store.days).forEach(function (k) { var dd = store.days[k]; ["morning", "afternoon"].forEach(function (s) { if (dd && dd[s] && dd[s].note) items.push({ k: k, s: s, note: dd[s].note, at: dd[s].endedAt || k }); }); });
     items.sort(function (a, b) { return a.at < b.at ? 1 : -1; });
-    if (!items.length) { var li0 = el("li"); li0.append(el("span", "small", "—"), el("span", "what small", "Whatever surfaces after a sit collects here.")); list.append(li0); }
+    if (!items.length) { var li0 = el("li"); li0.append(el("span", "small", "Whatever surfaces after a sit will gather here.")); list.append(li0); }
     items.slice(0, 12).forEach(function (it) {
       var p = it.k.split("-"), dt = new Date(+p[0], +p[1] - 1, +p[2]);
-      var li = el("li"); li.append(el("span", "small", dt.toLocaleDateString(undefined, { day: "numeric", month: "short" }) + " " + (it.s === "morning" ? "am" : "pm")), el("span", "what", it.note)); list.append(li);
+      var li = el("li"); li.append(el("span", "small", dt.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }) + " · " + it.s), el("span", "what", it.note)); list.append(li);
     });
 
     var sl = $("syncLine");
@@ -589,39 +719,31 @@ button.bead { padding: 0; cursor: pointer; }
     else if (store.mode === "local") sl.textContent = "Saved on this phone. Make a backup now and then.";
     else if (store.mode === "error") sl.textContent = "Can’t reach your saved practice right now.";
   }
-  function renderLesson(unlocked) {
-    var box = $("lessonBox"); box.textContent = "";
-    if (!unlocked) { box.append(el("p", "small", "Lesson 1 opens after your first sit. Each bead unlocks one.")); return; }
-    var L = lessonFor(ui.lesson);
-    box.append(el("span", "caps small", "Chapter " + L.chn + " \u00B7 " + L.ch), el("h4", "", L.n + ". " + L.t), el("p", "text", L.b), el("span", "small", L.s));
-    var nav = el("div", "lesson-nav");
-    var prev = el("button", "", "\u2190 Previous"); prev.type = "button"; prev.disabled = ui.lesson <= 1; prev.onclick = function () { ui.lesson--; render(); };
-    var next = el("button", "", "Next \u2192"); next.type = "button"; next.disabled = ui.lesson >= unlocked; next.onclick = function () { ui.lesson++; render(); };
-    nav.append(prev, next); box.append(nav);
-  }
   function onTime() { saveTimes({ morning: $("t-morning").value || "07:00", afternoon: $("t-afternoon").value || "17:30" }); }
   $("t-morning").addEventListener("change", onTime);
   $("t-afternoon").addEventListener("change", onTime);
 
-  // music
+  // music page
+  function setMusicOn(on) { ui.musicOn = on; lsSet("dive.musicOn", on); if (!on) stopPreview(); render(); }
   function renderMusic() {
-    var box = $("tracks"); box.textContent = "";
+    $("musicSwitch").setAttribute("aria-checked", String(ui.musicOn));
+    $("musicSwitchNote").textContent = ui.musicOn ? (ui.musicMode === "fade" ? "Plays while you settle and while you come up" : "Plays softly through the whole sit") : "Off. Only the bells.";
+    var box = $("tracks"); box.textContent = ""; box.classList.toggle("off", !ui.musicOn);
     TRACKS.forEach(function (t) {
       var b = el("button", "track"); b.type = "button"; b.setAttribute("aria-pressed", String(ui.track === t.id));
-      var sq = el("span", "sq" + (ui.track === t.id ? " on" : ""));
-      b.append(sq, el("span", "t-name", t.name), el("span", "t-meta", (t.by ? t.by + " \u00B7 " : "") + t.len));
-      b.onclick = function () { ui.track = t.id; lsSet("dive.track", t.id); stopPreview(); renderMusic(); };
+      b.append(el("span", "dot"), el("span", "t-name", t.name), el("span", "t-meta", t.by));
+      b.onclick = function () { ui.track = t.id; lsSet("dive.track", t.id); if (!ui.musicOn) setMusicOn(true); stopPreview(); renderMusic(); };
       box.append(b);
     });
     $("vol").value = ui.vol;
     $("mode-fade").setAttribute("aria-pressed", String(ui.musicMode === "fade"));
     $("mode-through").setAttribute("aria-pressed", String(ui.musicMode === "through"));
-    $("mode-fade").querySelector(".sq").classList.toggle("on", ui.musicMode === "fade");
-    $("mode-through").querySelector(".sq").classList.toggle("on", ui.musicMode === "through");
-    $("previewBtn").hidden = ui.track === "none";
+    $("previewBtn").hidden = !ui.musicOn;
     $("previewBtn").textContent = preview ? "Stop" : "Listen";
     $("credits").textContent = CREDITS;
   }
+  $("musicSwitch").onclick = function () { setMusicOn(!ui.musicOn); };
+  $("musicChip").onclick = function () { setMusicOn(!ui.musicOn); };
   $("mode-fade").onclick = function () { ui.musicMode = "fade"; lsSet("dive.musicMode", "fade"); renderMusic(); };
   $("mode-through").onclick = function () { ui.musicMode = "through"; lsSet("dive.musicMode", "through"); renderMusic(); };
   $("vol").addEventListener("input", function () { ui.vol = +this.value; lsSet("dive.vol", ui.vol); if (preview) preview.to(ui.vol, 0.2); });
@@ -692,48 +814,58 @@ button.bead { padding: 0; cursor: pointer; }
   function keepAwake() { try { if (navigator.wakeLock && document.visibilityState === "visible") navigator.wakeLock.request("screen").then(function (l) { lock = l; }).catch(function () {}); } catch (e) {} }
   function releaseAwake() { try { if (lock) lock.release(); } catch (e) {} lock = null; }
 
-  // ---------------- session ----------------
-  var S = null, tickId = null, dimId = null, music = null, raf = null;
+  // ---------------- sitting ----------------
+  var S = null, tickId = null, dimId = null, music = null, sessionMusic = true;
 
+  function musicLevel(manual) {
+    if (!S) return 0;
+    if (S.phase === "med") return ui.musicMode === "fade" && !manual ? 0 : ui.vol * 0.55;
+    if (S.phase === "rest") return ui.vol * 0.8;
+    if (S.phase === "done") return ui.vol * 0.5;
+    return ui.vol;
+  }
   function begin() {
-    stopPreview(); audio();
+    stopPreview(); audio(); homeScene.stop();
     var now = Date.now();
     S = { slot: ui.slot, dur: ui.dur, start: now, settleEnd: now + SETTLE * 1000, medEnd: now + (SETTLE + ui.dur * 60) * 1000, restEnd: now + (SETTLE + ui.dur * 60 + REST) * 1000, phase: "", peek: false, minutes: ui.dur };
-    music = makePlayer(trackFile());
+    sessionMusic = ui.musicOn;
+    music = sessionMusic ? makePlayer(trackFile()) : null;
     if (music) music.to(ui.vol, 6);
     bowl(0.3, 1); buzz(50);
-    $("session").hidden = false; $("sAfter").hidden = true; $("sActions").hidden = false; $("sWords").hidden = false; $("sDiagramWrap").hidden = false;
-    $("fishNote").value = ""; resetEnd();
-    keepAwake(); tick(); clearInterval(tickId); tickId = setInterval(tick, 1000); wake(); animate();
+    $("session").hidden = false; $("sAfter").hidden = true; $("sUi").hidden = false;
+    $("fishNote").value = ""; resetEnd(); updateMusicBtn();
+    sitScene.depth(0.05); sitScene.start();
+    keepAwake(); tick(); clearInterval(tickId); tickId = setInterval(tick, 1000); wake();
   }
   function wake() { clearTimeout(dimId); $("session").classList.remove("dim"); dimId = setTimeout(function () { $("session").classList.add("dim"); }, 9000); }
+  function updateMusicBtn() { $("sMusic").textContent = sessionMusic ? "Music on" : "Music off"; }
+  $("sMusic").onclick = function () {
+    sessionMusic = !sessionMusic; ui.musicOn = sessionMusic; lsSet("dive.musicOn", sessionMusic);
+    if (!sessionMusic && music) { music.stop(2.5); music = null; }
+    if (sessionMusic && !music) { music = makePlayer(trackFile()); if (music) music.to(musicLevel(true), 4); }
+    updateMusicBtn(); wake();
+  };
 
-  // where the point sits: down over the first minutes, drifting near the source, up during the last two
+  // how deep the view is: down through the first minutes, resting near the source, up during the last two
   function depthNow(now) {
     if (!S) return 0;
-    if (now < S.settleEnd) return 0.04 * (now - S.start) / (SETTLE * 1000);
+    if (now < S.settleEnd) return 0.05 + 0.05 * (now - S.start) / (SETTLE * 1000);
     if (now < S.medEnd) {
       var since = now - S.settleEnd, descent = Math.min(1, since / Math.min(300000, (S.medEnd - S.settleEnd) * 0.4));
-      var ease = 1 - Math.pow(1 - descent, 2);
-      return 0.04 + ease * 0.86 + (descent >= 1 ? 0.07 * Math.sin(since / 9000) : 0);
+      var ease = 1 - Math.pow(1 - descent, 2.2);
+      return 0.1 + ease * 0.82 + (descent >= 1 ? 0.03 * Math.sin(since / 12000) : 0);
     }
-    if (now < S.restEnd) { var r = (now - S.medEnd) / (S.restEnd - S.medEnd); return 0.9 * (1 - r); }
+    if (now < S.restEnd) { var r = (now - S.medEnd) / (S.restEnd - S.medEnd); return 0.92 * Math.pow(1 - r, 1.4); }
     return 0;
-  }
-  function animate() {
-    cancelAnimationFrame(raf);
-    var last = 0;
-    function f(t) { if (!S || S.phase === "done") return; if (t - last > 120) { last = t; placeDot(sDot, depthNow(Date.now())); } raf = requestAnimationFrame(f); }
-    raf = requestAnimationFrame(f);
   }
 
   function setPhase(p) {
     S.phase = p;
     var w = $("sWords"), ph = $("sPhase"), first = !lsGet("dive.sits", 0);
-    if (p === "settle") { ph.textContent = "Settling"; w.textContent = first ? "Close your eyes. In half a minute, begin thinking your sound. Softly." : "Close your eyes. Let yourself arrive."; }
-    if (p === "med") { ph.textContent = (S.slot === "morning" ? "Morning" : "Afternoon") + " · " + S.dur + " min"; w.textContent = "Faintly. Effortlessly. Drift, and come back to the sound."; if (music) { if (ui.musicMode === "fade") music.to(0, 30); else music.to(ui.vol * 0.55, 12); } }
-    if (p === "rest") { ph.textContent = "Coming up"; w.textContent = "Let the sound go. Eyes closed. Two minutes."; if (music) music.to(ui.vol * 0.8, 12); }
-    if (p === "done") { ph.textContent = "Surfaced"; w.textContent = ""; }
+    if (p === "settle") { ph.textContent = "Settling"; w.textContent = first ? "Close your eyes. In half a minute, begin thinking your sound, softly." : "Close your eyes. You’ve arrived."; }
+    if (p === "med") { ph.textContent = (S.slot === "morning" ? "Morning" : "Afternoon") + " · " + S.dur + " min"; w.textContent = "Faintly. Effortlessly. Drift, and come back."; if (music) music.to(musicLevel(false), ui.musicMode === "fade" ? 30 : 12); }
+    if (p === "rest") { ph.textContent = "Coming up"; w.textContent = "Let the sound go. Eyes closed. Rise slowly."; if (music) music.to(musicLevel(false), 12); }
+    if (p === "done") { ph.textContent = ""; w.textContent = ""; }
   }
 
   function tick() {
@@ -745,29 +877,31 @@ button.bead { padding: 0; cursor: pointer; }
       if (S.phase !== "rest") { var late = now - S.medEnd > 90000; setPhase("rest"); if (!late) { bowl(0, 0.9); buzz([60, 140, 60]); } }
       target = S.restEnd;
     } else { finish(true); return; }
-    $("sClock").textContent = S.peek ? fmt((target - now) / 1000) : "";
-    $("peekBtn").textContent = S.peek ? "Hide time" : "Show time";
+    sitScene.depth(depthNow(now));
+    $("sClock").textContent = S.peek ? fmt((target - now) / 1000) + " left" : "";
   }
 
   function finish(full) {
-    clearInterval(tickId); tickId = null; cancelAnimationFrame(raf);
+    clearInterval(tickId); tickId = null;
     if (full) { bowl(0, 0.5); bowl(1.6, 0.5); buzz([30, 200, 30]); }
     S.minutes = full ? S.dur : Math.max(0, Math.round((Math.min(Date.now(), S.medEnd) - S.settleEnd) / 60000));
-    setPhase("done"); placeDot(sDot, 0);
-    if (music) music.to(ui.vol * 0.5, 5);
+    setPhase("done"); sitScene.depth(0);
+    if (music) music.to(musicLevel(false), 5);
     clearTimeout(dimId); $("session").classList.remove("dim");
-    $("sClock").textContent = ""; $("sActions").hidden = true; $("sWords").hidden = true; $("sDiagramWrap").hidden = true; $("sAfter").hidden = false;
+    $("sUi").hidden = true; $("sAfter").hidden = false; $("sAfter").scrollTop = 0;
 
     var tk = todayKey(), today = store.days[tk] || {}, counts = S.minutes >= 1;
-    var already = done(today, S.slot), firstToday = !done(today, "morning") && !done(today, "afternoon");
+    var already = done(today, S.slot);
     var sitsAfter = totals().sits + (counts && !already ? 1 : 0);
-    if (counts && !already) { $("beadBig").textContent = beadOf(sitsAfter); $("beadOf").textContent = MILESTONES[sitsAfter] || "of 108 \u00B7 a new bead"; }
-    else if (counts) { $("beadBig").textContent = "+" + S.minutes; $("beadOf").textContent = "more minutes within"; }
-    else { $("beadBig").textContent = ""; $("beadOf").textContent = ""; }
-    var gl = $("giftLine"); gl.textContent = "";
-    if (counts && !already) { var L = lessonFor(beadOf(sitsAfter)); gl.append(el("span", "g-ch", "Lesson " + L.n + " \u00B7 " + L.ch), el("strong", "g-t", L.t), document.createTextNode(L.b), el("span", "g-s", L.s)); }
-    else if (counts) gl.textContent = S.slot === "afternoon" ? "Both dives done today." : "See you this afternoon.";
-    else gl.textContent = "Every sit counts, even a short one.";
+    var gc = $("giftCard"), bl = $("beadLine");
+    if (counts && !already) {
+      var bead = beadOf(sitsAfter);
+      bl.textContent = ""; bl.append(el("b", "", "Bead " + bead + " of 108"), document.createTextNode(MILESTONES[sitsAfter] ? " · " + MILESTONES[sitsAfter] : " · a new lesson has opened."));
+      lessonInto(gc, lessonFor(bead)); gc.hidden = false;
+    } else {
+      bl.textContent = counts ? S.minutes + " more minutes within." : "Every sit counts, even a short one.";
+      gc.hidden = true;
+    }
     $("saveBtn").textContent = counts ? "Keep it" : "Close";
     $("fishNote").hidden = !counts; $("fishLabel").hidden = !counts;
     releaseAwake();
@@ -787,28 +921,30 @@ button.bead { padding: 0; cursor: pointer; }
     closeSession();
   }
   function closeSession() {
-    clearInterval(tickId); tickId = null; clearTimeout(dimId); cancelAnimationFrame(raf); releaseAwake();
+    clearInterval(tickId); tickId = null; clearTimeout(dimId); releaseAwake(); sitScene.stop();
     if (music) { music.stop(4); music = null; }
     S = null; $("session").hidden = true; render();
+    if (currentView() === "home") homeScene.start();
   }
-  function resetEnd() { var a = $("endArea"); a.textContent = ""; var b = el("button", "", "End early"); b.type = "button"; b.onclick = askEnd; a.append(b); }
+  function resetEnd() { var a = $("endArea"); a.textContent = ""; var b = el("button", "", "End"); b.type = "button"; b.onclick = askEnd; a.append(b); }
   function askEnd() {
     var a = $("endArea"); a.textContent = "";
-    var n = el("button", "", "Keep sitting"); n.type = "button"; n.onclick = resetEnd;
-    var y = el("button", "", "End now"); y.type = "button"; y.style.color = "#e2e3dd"; y.style.marginLeft = "18px"; y.onclick = function () { finish(S.phase === "rest"); };
+    var n = el("button", "", "Keep sitting"); n.type = "button"; n.onclick = function () { resetEnd(); wake(); };
+    var y = el("button", "", "End now"); y.type = "button"; y.style.marginLeft = "8px"; y.onclick = function () { finish(S.phase === "rest"); };
     a.append(n, y); wake();
   }
 
   // ---------------- events ----------------
   ["morning", "afternoon"].forEach(function (s) { $("slot-" + s).onclick = function () { ui.slot = s; ui.confirmClear = false; render(); }; });
-  [10, 15, 20].forEach(function (d) { $("len-" + d).onclick = function () { ui.dur = d; lsSet("dive.dur", d); render(); }; });
+  $("lenChip").onclick = function () { ui.dur = ui.dur === 20 ? 10 : ui.dur === 10 ? 15 : 20; lsSet("dive.dur", ui.dur); render(); };
   $("beginBtn").onclick = begin;
   $("peekBtn").onclick = function () { if (S) { S.peek = !S.peek; tick(); wake(); } };
   $("saveBtn").onclick = saveAndClose;
-  $("session").addEventListener("pointerdown", function () { if (S && S.phase !== "done") wake(); });
+  $("sUi").addEventListener("pointerdown", function () { if (S && S.phase !== "done") wake(); });
   document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "visible") { if (S && S.phase !== "done") { keepAwake(); tick(); animate(); } else render(); }
+    if (document.visibilityState === "visible") { if (S && S.phase !== "done") { keepAwake(); tick(); } else render(); }
   });
+  window.addEventListener("resize", function () { homeScene.redraw(); });
   setInterval(function () { if (!S) render(); }, 60000);
 
 
