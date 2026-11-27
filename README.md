@@ -3,7 +3,8 @@
 A twice-a-day meditation timer and practice log, in the spirit of Maharishi Mahesh Yogi and David Lynch.
 
 - 30 seconds to settle, 20 minutes, then 2 minutes to come up slowly, with bells.
-- A beginner's guide, a mala of 108 beads, a daily teaching that opens after you sit, and a place to keep whatever surfaces.
+- A beginner's guide, and a mala of 108 beads: each sit unlocks one of 108 short lessons from Maharishi Mahesh Yogi and David Lynch, in nine chapters.
+- A place to keep whatever surfaces after a sit.
 - Works offline. Your log stays on your phone; use **Practice → Save a backup** to keep a copy.
 
 ## Install on iPhone

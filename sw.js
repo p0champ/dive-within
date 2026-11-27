@@ -1,5 +1,5 @@
 // Dive Within: works offline once opened. Bump VERSION on every release.
-const VERSION = "dive-v1";
+const VERSION = "dive-v2";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./music/peaceful-desolation.mp3"];
 
 self.addEventListener("install", (e) => {
